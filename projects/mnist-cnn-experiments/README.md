@@ -1,6 +1,6 @@
 # MNIST Experiments
 
-这个项目使用 PyTorch 在 MNIST 手写数字识别任务上实现了两个可复现基线：
+这个项目使用 PyTorch 在 MNIST 手写数字识别任务上实现了两个版本：
 
 - `MLP baseline`：单隐藏层全连接网络，作为最小可用基线
 - `CNN improved`：两层卷积网络，加入 BatchNorm、Dropout、AdamW 和学习率调度
@@ -18,7 +18,7 @@
 
 - CNN 相比 MLP 提升了 `3.35` 个百分点
 - CNN 在第 `12` 个 epoch 达到最佳精度 `99.47%`
-- 该项目现在已经具备清晰的 baseline-to-improvement 叙事，适合继续整理为简历项目
+- 这个项目清晰展示了从简单基线到改进模型的迭代过程
 
 ## 快速运行
 
@@ -75,7 +75,7 @@ mnist-cnn-experiments/
 └─ ../requirements.txt   # shared dependency file
 ```
 
-源码职责划分：
+源码职责：
 
 - `train_mlp.py` / `train_cnn.py`：命令行入口
 - `mnist_experiments/models.py`：MLP 和 CNN 模型定义
@@ -88,22 +88,22 @@ mnist-cnn-experiments/
 
 `MLP baseline`
 
-- Optimizer: `SGD`
-- Learning rate: `0.01`
-- Epochs: `10`
-- Hidden dim: `128`
+- 优化器：`SGD`
+- 学习率：`0.01`
+- 训练轮数：`10`
+- 隐藏层维度：`128`
 
 `CNN improved`
 
-- Optimizer: `AdamW`
-- Learning rate: `0.001`
-- Weight decay: `1e-4`
-- Epochs: `15`
-- Batch size: `64`
-- Augmentation: `RandomRotation(5)`
-- Hidden dim: `512`
-- Dropout: `0.5`
-- Scheduler: `ReduceLROnPlateau`
+- 优化器：`AdamW`
+- 学习率：`0.001`
+- 权重衰减：`1e-4`
+- 训练轮数：`15`
+- 批大小：`64`
+- 数据增强：`RandomRotation(5)`
+- 隐藏层维度：`512`
+- Dropout：`0.5`
+- 学习率调度：`ReduceLROnPlateau`
 
 ## 工程说明
 

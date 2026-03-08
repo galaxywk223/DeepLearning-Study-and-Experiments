@@ -1,6 +1,6 @@
 # CIFAR-10 CNN Experiments
 
-这个目录现在包含两个阶段：
+这个项目围绕 CIFAR-10 图像分类任务实现了三个版本：
 
 - `baseline`：简单 CNN 起点
 - `improved`：在 baseline 上加入工程化优化版本
@@ -15,7 +15,7 @@
 - 数据处理：只做 `ToTensor + Normalize`
 - 不包含的优化：数据增强、BN、Dropout、残差结构、AMP、标签平滑
 
-这版的目的不是追求最高精度，而是建立一个清晰的起点，复现“简单 CNN 在 CIFAR-10 上准确率有限，因此需要进一步工程化优化”的项目背景。
+这一版的目标是建立清晰的起点，作为后续优化版本的对照组。
 
 ## 第二版定位
 
@@ -138,36 +138,36 @@ cifar10-cnn-experiments/
 
 `baseline`
 
-- Optimizer: `Adam`
-- Learning rate: `0.001`
-- Epochs: `20`
-- Batch size: `128`
-- Num workers: `2`
+- 优化器：`Adam`
+- 学习率：`0.001`
+- 训练轮数：`20`
+- 批大小：`128`
+- DataLoader 进程数：`2`
 
 `improved`
 
-- Optimizer: `AdamW`
-- Learning rate: `0.0003`
-- Weight decay: `5e-4`
-- Epochs: `30`
-- Batch size: `128`
-- Num workers: `4`
-- Label smoothing: `0.1`
-- Scheduler: `CosineAnnealingLR`
-- AMP: enabled on CUDA
-- Augmentation: `RandomCrop(32, padding=4)` + `RandomHorizontalFlip` + `ColorJitter`
+- 优化器：`AdamW`
+- 学习率：`0.0003`
+- 权重衰减：`5e-4`
+- 训练轮数：`30`
+- 批大小：`128`
+- DataLoader 进程数：`4`
+- 标签平滑：`0.1`
+- 学习率调度：`CosineAnnealingLR`
+- AMP：CUDA 下启用
+- 数据增强：`RandomCrop(32, padding=4)` + `RandomHorizontalFlip` + `ColorJitter`
 - Windows 下会自动将 `num_workers` 上限控制在 `4`
 
 `resnet`
 
-- Optimizer: `SGD` with Nesterov momentum
-- Learning rate: `0.1`
-- Weight decay: `5e-4`
-- Epochs: `100`
-- Batch size: `128`
-- Num workers: `4`
-- Label smoothing: `0.1`
-- Scheduler: `MultiStepLR`
-- AMP: enabled on CUDA
-- Augmentation: `RandomCrop(32, padding=4)` + `RandomHorizontalFlip` + `ColorJitter` + `RandomErasing`
+- 优化器：`SGD` + Nesterov momentum
+- 学习率：`0.1`
+- 权重衰减：`5e-4`
+- 训练轮数：`100`
+- 批大小：`128`
+- DataLoader 进程数：`4`
+- 标签平滑：`0.1`
+- 学习率调度：`MultiStepLR`
+- AMP：CUDA 下启用
+- 数据增强：`RandomCrop(32, padding=4)` + `RandomHorizontalFlip` + `ColorJitter` + `RandomErasing`
 - 当前结果：`95.33%`

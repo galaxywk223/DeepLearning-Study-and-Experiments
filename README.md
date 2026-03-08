@@ -1,25 +1,42 @@
 # DeepLearning 学习笔记与实验
 
-这个仓库整理了学习深度学习过程中的笔记（偏原理推导 + 直觉类比）以及可运行的深度学习实验代码。
+这个仓库包含两个方向的内容：
 
-## 导航
+- 深度学习实验项目：围绕 MNIST 和 CIFAR-10 构建可运行、可对比的 PyTorch 训练代码
+- 学习笔记：记录模型原理、数学直觉和实现过程
 
-- 笔记：`notes/`
-  - 多层感知机（MLP）手写数字识别：[notes/mlp-mnist.md](notes/mlp-mnist.md)
-  - 卷积神经网络（CNN）数学直觉与 MNIST 实战：[notes/cnn-mnist.md](notes/cnn-mnist.md)
-  - Transformer 自注意力机制推导：[notes/transformer-self-attention.md](notes/transformer-self-attention.md)
-- 代码：
-  - `projects/mnist-cnn-experiments/`（见 [projects/mnist-cnn-experiments/README.md](projects/mnist-cnn-experiments/README.md)）
-  - `projects/cifar10-cnn-experiments/`（见 [projects/cifar10-cnn-experiments/README.md](projects/cifar10-cnn-experiments/README.md)）
-- 资源：`assets/`（图片等）
+## 项目概览
 
-## 快速运行
+### MNIST Experiments
+
+项目路径：[projects/mnist-cnn-experiments/README.md](projects/mnist-cnn-experiments/README.md)
+
+- `MLP baseline`：测试集准确率 `96.12%`
+- `CNN improved`：测试集准确率 `99.47%`
+- 重点：从全连接基线升级到卷积模型，并完成训练流程模块化、结果落盘和可视化输出
+
+### CIFAR-10 CNN Experiments
+
+项目路径：[projects/cifar10-cnn-experiments/README.md](projects/cifar10-cnn-experiments/README.md)
+
+- `baseline`：测试集准确率 `73.25%`
+- `improved`：测试集准确率 `87.35%`
+- `resnet`：测试集准确率 `95.33%`
+- 重点：沿着简单 CNN、工程化优化版、残差网络三条线做出清晰的性能迭代
+
+## 笔记目录
+
+笔记索引见 [notes/README.md](notes/README.md)。
+
+- [notes/mlp-mnist.md](notes/mlp-mnist.md)：MLP 手写数字识别
+- [notes/cnn-mnist.md](notes/cnn-mnist.md)：CNN 数学直觉与 MNIST 实战
+- [notes/transformer-self-attention.md](notes/transformer-self-attention.md)：Transformer 自注意力机制推导
+
+## 快速开始
 
 共享依赖文件位于 `projects/requirements.txt`。
 
-### MNIST 实验
-
-在 `projects/mnist-cnn-experiments/` 目录下运行：
+### MNIST
 
 ```bash
 cd projects/mnist-cnn-experiments
@@ -28,9 +45,7 @@ python train_mlp.py
 python train_cnn.py
 ```
 
-### CIFAR-10 实验
-
-在 `projects/cifar10-cnn-experiments/` 目录下运行：
+### CIFAR-10
 
 ```bash
 cd projects/cifar10-cnn-experiments
@@ -38,4 +53,18 @@ pip install -r ../requirements.txt
 python train_baseline.py
 python train_improved.py
 python train_resnet.py
+```
+
+## 仓库结构
+
+```text
+DeepLearning/
+├─ notes/
+├─ assets/
+│  └─ images/
+├─ projects/
+│  ├─ requirements.txt
+│  ├─ mnist-cnn-experiments/
+│  └─ cifar10-cnn-experiments/
+└─ README.md
 ```
