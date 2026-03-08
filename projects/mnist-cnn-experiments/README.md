@@ -5,16 +5,14 @@
 - `MLP baseline`：单隐藏层全连接网络，作为最小可用基线
 - `CNN improved`：两层卷积网络，加入 BatchNorm、Dropout、AdamW 和学习率调度
 
-目标不是单纯“把模型跑通”，而是把一个早期练手脚本整理成更像正式项目的实验代码，包括模块化源码结构、统一训练入口、实验产物落盘和结果对比。
-
 ## 实验结果
 
 以下结果来自本地 CUDA 环境的最新一次完整运行：
 
-| Model | Epochs | Batch Size | Augmentation | Best Test Accuracy | Final Test Loss |
-| --- | ---: | ---: | --- | ---: | ---: |
-| MLP baseline | 10 | 64 | None | 96.12% | 0.1337 |
-| CNN improved | 15 | 64 | RandomRotation(5) | 99.47% | 0.0192 |
+| Model        | Epochs | Batch Size | Augmentation      | Best Test Accuracy | Final Test Loss |
+| ------------ | -----: | ---------: | ----------------- | -----------------: | --------------: |
+| MLP baseline |     10 |         64 | None              |             96.12% |          0.1337 |
+| CNN improved |     15 |         64 | RandomRotation(5) |             99.47% |          0.0192 |
 
 对比结论：
 

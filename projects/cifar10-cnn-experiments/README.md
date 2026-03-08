@@ -1,10 +1,8 @@
 # CIFAR-10 CNN Experiments
 
-这个目录用于补回仓库里丢失的 CIFAR-10 图像分类实验代码。
-
 这个目录现在包含两个阶段：
 
-- `baseline`：先恢复简单 CNN 起点
+- `baseline`：简单 CNN 起点
 - `improved`：在 baseline 上加入工程化优化版本
 - `resnet`：第三版残差网络，继续冲更高上限
 
@@ -50,11 +48,11 @@
 
 以下结果来自本地 CUDA 环境的实际运行产物：
 
-| Variant | Epochs | Batch Size | Best Test Accuracy | Final Test Loss | Notes |
-| --- | ---: | ---: | ---: | ---: | --- |
-| baseline | 20 | 128 | 73.25% | 1.1329 | 简单 CNN，无增强 |
-| improved | 30 | 256 | 87.35% | 0.8294 | 更深 CNN + 增强 + AdamW + Cosine + AMP |
-| resnet | 100 | 128 | 95.33% | 0.6180 | 残差网络 + SGD + MultiStep + AMP + RandomErasing |
+| Variant  | Epochs | Batch Size | Best Test Accuracy | Final Test Loss | Notes                                            |
+| -------- | -----: | ---------: | -----------------: | --------------: | ------------------------------------------------ |
+| baseline |     20 |        128 |             73.25% |          1.1329 | 简单 CNN，无增强                                 |
+| improved |     30 |        256 |             87.35% |          0.8294 | 更深 CNN + 增强 + AdamW + Cosine + AMP           |
+| resnet   |    100 |        128 |             95.33% |          0.6180 | 残差网络 + SGD + MultiStep + AMP + RandomErasing |
 
 对比结论：
 
@@ -64,7 +62,7 @@
 - baseline 在约第 `4-5` 个 epoch 后接近瓶颈，并出现明显过拟合迹象
 - improved 在第 `27` 个 epoch 达到当前最佳精度 `87.35%`
 - resnet 在第 `92` 个 epoch 达到当前最佳精度 `95.33%`
-- 当前恢复版已经完整复现了“baseline 表现有限，通过工程化优化显著提升”的项目主线，并且已经超过了 `90%+` 目标
+- 这个项目清晰展示了“baseline 表现有限，通过工程化优化和结构升级显著提升性能”的迭代路径，并且已经超过了 `90%+` 目标
 
 ## 运行
 
@@ -158,7 +156,7 @@ cifar10-cnn-experiments/
 - Scheduler: `CosineAnnealingLR`
 - AMP: enabled on CUDA
 - Augmentation: `RandomCrop(32, padding=4)` + `RandomHorizontalFlip` + `ColorJitter`
-- Windows worker strategy: request is automatically capped to `4`
+- Windows 下会自动将 `num_workers` 上限控制在 `4`
 
 `resnet`
 
@@ -172,9 +170,4 @@ cifar10-cnn-experiments/
 - Scheduler: `MultiStepLR`
 - AMP: enabled on CUDA
 - Augmentation: `RandomCrop(32, padding=4)` + `RandomHorizontalFlip` + `ColorJitter` + `RandomErasing`
-- Current reproduced result: `95.33%`
-
-## 后续计划
-
-- 可以继续尝试更强的数据增强或更深残差网络，进一步逼近更高上限
-- 也可以转入整理项目摘要、简历表述和结果可视化
+- 当前结果：`95.33%`

@@ -11,13 +11,7 @@
 - 代码：
   - `projects/mnist-cnn-experiments/`（见 [projects/mnist-cnn-experiments/README.md](projects/mnist-cnn-experiments/README.md)）
   - `projects/cifar10-cnn-experiments/`（见 [projects/cifar10-cnn-experiments/README.md](projects/cifar10-cnn-experiments/README.md)）
-- 资源：`assets/`（图片/视频等）
-
-## 演示视频
-
-- 演示文件：`assets/videos/mnist-demo.mp4`
-- 视频要点整理：`assets/videos/README.md`
-- 备注：视频后半段的 CIFAR-10 图像分类与工程化优化部分此前因重装系统导致源代码遗失；当前仓库已补回 baseline、improved、resnet 三个版本，当前复现实验结果约为 `73.25% -> 87.35% -> 95.33%`。
+- 资源：`assets/`（图片等）
 
 ## 快速运行
 
