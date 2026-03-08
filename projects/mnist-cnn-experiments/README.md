@@ -25,7 +25,7 @@
 ## 快速运行
 
 ```bash
-pip install -r requirements.txt
+pip install -r ../requirements.txt
 python train_mlp.py
 python train_cnn.py
 ```
@@ -51,10 +51,16 @@ python train_mlp.py --epochs 3 --output-dir outputs/dev-runs
 - `outputs/mlp-baseline/`
 - `outputs/cnn-improved/`
 
+说明：
+
+- `data/` 和 `outputs/` 都是本地运行时生成目录，默认不提交到仓库
+- 共享依赖文件位于 `../requirements.txt`
+
 ## 项目结构
 
 ```text
 mnist-cnn-experiments/
+├─ data/                 # local, gitignored
 ├─ mnist_experiments/
 │  ├─ cli.py
 │  ├─ config.py
@@ -64,11 +70,11 @@ mnist-cnn-experiments/
 │  ├─ runner.py
 │  ├─ utils.py
 │  └─ visualize.py
-├─ outputs/
+├─ outputs/              # local, gitignored
 ├─ cnn_model.py
 ├─ train_cnn.py
 ├─ train_mlp.py
-└─ requirements.txt
+└─ ../requirements.txt   # shared dependency file
 ```
 
 源码职责划分：
