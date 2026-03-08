@@ -1,8 +1,28 @@
 # MNIST Experiments
 
-这个目录包含在学习过程中整理的 MNIST 训练脚本（MLP/CNN），用于把笔记里的推导落到可运行的代码上。
+这个项目使用 PyTorch 在 MNIST 手写数字识别任务上实现了两个可复现基线：
 
-## 运行
+- `MLP baseline`：单隐藏层全连接网络，作为最小可用基线
+- `CNN improved`：两层卷积网络，加入 BatchNorm、Dropout、AdamW 和学习率调度
+
+目标不是单纯“把模型跑通”，而是把一个早期练手脚本整理成更像正式项目的实验代码，包括模块化源码结构、统一训练入口、实验产物落盘和结果对比。
+
+## 实验结果
+
+以下结果来自本地 CUDA 环境的最新一次完整运行：
+
+| Model | Epochs | Batch Size | Augmentation | Best Test Accuracy | Final Test Loss |
+| --- | ---: | ---: | --- | ---: | ---: |
+| MLP baseline | 10 | 64 | None | 96.12% | 0.1337 |
+| CNN improved | 15 | 64 | RandomRotation(5) | 99.47% | 0.0192 |
+
+对比结论：
+
+- CNN 相比 MLP 提升了 `3.35` 个百分点
+- CNN 在第 `12` 个 epoch 达到最佳精度 `99.47%`
+- 该项目现在已经具备清晰的 baseline-to-improvement 叙事，适合继续整理为简历项目
+
+## 快速运行
 
 ```bash
 pip install -r requirements.txt
@@ -10,7 +30,80 @@ python train_mlp.py
 python train_cnn.py
 ```
 
-## 说明
+也可以覆盖默认参数：
 
-- 数据会自动下载到 `./data`（已在仓库中忽略）
-- 训练过程的临时输出/权重文件默认不提交到仓库
+```bash
+python train_cnn.py --epochs 5 --batch-size 128 --experiment-name cnn-dev
+python train_mlp.py --epochs 3 --output-dir outputs/dev-runs
+```
+
+## 输出文件
+
+每次运行都会写入 `outputs/<experiment-name>/`：
+
+- `config.json`：本次实验配置
+- `metrics.json`：训练历史、最佳精度、最终精度
+- `best_model.pt`：最佳 checkpoint
+- `predictions.png`：预测结果示例图
+
+当前已生成的实验产物：
+
+- `outputs/mlp-baseline/`
+- `outputs/cnn-improved/`
+
+## 项目结构
+
+```text
+mnist-cnn-experiments/
+├─ mnist_experiments/
+│  ├─ cli.py
+│  ├─ config.py
+│  ├─ data.py
+│  ├─ engine.py
+│  ├─ models.py
+│  ├─ runner.py
+│  ├─ utils.py
+│  └─ visualize.py
+├─ outputs/
+├─ cnn_model.py
+├─ train_cnn.py
+├─ train_mlp.py
+└─ requirements.txt
+```
+
+源码职责划分：
+
+- `train_mlp.py` / `train_cnn.py`：命令行入口
+- `mnist_experiments/models.py`：MLP 和 CNN 模型定义
+- `mnist_experiments/data.py`：MNIST 数据集和预处理
+- `mnist_experiments/engine.py`：训练与评估循环
+- `mnist_experiments/runner.py`：实验编排、checkpoint 保存、metrics 输出
+- `mnist_experiments/visualize.py`：预测结果图保存
+
+## 默认配置
+
+`MLP baseline`
+
+- Optimizer: `SGD`
+- Learning rate: `0.01`
+- Epochs: `10`
+- Hidden dim: `128`
+
+`CNN improved`
+
+- Optimizer: `AdamW`
+- Learning rate: `0.001`
+- Weight decay: `1e-4`
+- Epochs: `15`
+- Batch size: `64`
+- Augmentation: `RandomRotation(5)`
+- Hidden dim: `512`
+- Dropout: `0.5`
+- Scheduler: `ReduceLROnPlateau`
+
+## 工程说明
+
+- 数据默认下载到 `./data`
+- 训练集可选随机旋转增强，测试集固定只做标准化，避免评估口径污染
+- 模型最佳权重和训练指标统一保存在 `outputs/` 下，便于后续补实验表和可视化
+- `cnn_model.py` 当前仅保留兼容导出，核心实现已迁移到 `mnist_experiments/`
