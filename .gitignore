@@ -23,6 +23,9 @@ env/
 Thumbs.db
 
 # Training outputs and logs
+outputs/
+*.out.log
+*.err.log
 projects/*/outputs/
 *.pth
 *.pt
@@ -30,5 +33,6 @@ projects/*/outputs/
 runs/
 
 # Data/artifacts
+data/
 projects/*/data/
 datasets/

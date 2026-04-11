@@ -3,13 +3,15 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
 
 @dataclass(slots=True)
 class ExperimentConfig:
     model_name: str
     experiment_name: str
-    data_dir: Path = Path("data")
-    output_dir: Path = Path("outputs")
+    data_dir: Path = PROJECT_ROOT / "data"
+    output_dir: Path = PROJECT_ROOT / "outputs"
     batch_size: int = 64
     epochs: int = 10
     learning_rate: float = 1e-3

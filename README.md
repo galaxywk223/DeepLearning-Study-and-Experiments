@@ -2,7 +2,7 @@
 
 这个仓库包含两个方向的内容：
 
-- 深度学习实验项目：围绕 MNIST 和 CIFAR-10 构建可运行、可对比的 PyTorch 训练代码
+- 深度学习实验项目：围绕 MNIST、CIFAR-10 和字符级语言模型构建可运行、可对比的 PyTorch 训练代码
 - 学习笔记：记录模型原理、数学直觉和实现过程
 
 ## 项目概览
@@ -24,6 +24,15 @@
 - `resnet`：测试集准确率 `95.33%`
 - 重点：沿着简单 CNN、工程化优化版、残差网络三条线做出清晰的性能迭代
 
+### Character Transformer Experiments
+
+项目路径：[projects/char-transformer-experiments/README.md](projects/char-transformer-experiments/README.md)
+
+- `bigram`：最小字符级 next-token baseline
+- `transformer`：带位置编码、因果掩码、多头注意力和 FFN 的 decoder-only Transformer
+- 最新结果：`transformer v3` 验证集 `perplexity = 4.63`
+- 重点：把自注意力笔记继续推进到可训练、可生成文本的最小语言模型实现，并支持不同 `temperature` 的生成对比
+
 ## 笔记目录
 
 笔记索引见 [notes/README.md](notes/README.md)。
@@ -31,6 +40,7 @@
 - [notes/mlp-mnist.md](notes/mlp-mnist.md)：MLP 手写数字识别
 - [notes/cnn-mnist.md](notes/cnn-mnist.md)：CNN 数学直觉与 MNIST 实战
 - [notes/transformer-self-attention.md](notes/transformer-self-attention.md)：Transformer 自注意力机制推导
+- [notes/transformer-language-model.md](notes/transformer-language-model.md)：从位置编码到最小 Transformer 语言模型实现
 
 ## 快速开始
 
@@ -55,6 +65,21 @@ python train_improved.py
 python train_resnet.py
 ```
 
+### Character Transformer
+
+```bash
+cd projects/char-transformer-experiments
+pip install -r ../requirements.txt
+python train_bigram.py
+python train_transformer.py
+python generate_samples.py --run-dir outputs/tinyshakespeare-transformer-v3 --temperatures 0.6 0.75 0.9
+```
+
+说明：
+
+- 三个实验项目现在都会默认把数据和输出写入各自项目目录
+- 仍然可以通过 `--data-dir` 和 `--output-dir` 覆盖默认路径
+
 ## 仓库结构
 
 ```text
@@ -65,7 +90,8 @@ DeepLearning/
 ├─ projects/
 │  ├─ requirements.txt
 │  ├─ mnist-cnn-experiments/
-│  └─ cifar10-cnn-experiments/
+│  ├─ cifar10-cnn-experiments/
+│  └─ char-transformer-experiments/
 └─ README.md
 ```
 
