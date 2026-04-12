@@ -46,11 +46,11 @@
 
 笔记索引见 [notes/README.md](notes/README.md)。
 
-- [notes/01-mlp-mnist.md](notes/01-mlp-mnist.md)：MLP 手写数字识别
-- [notes/02-cnn-mnist.md](notes/02-cnn-mnist.md)：CNN 数学直觉与 MNIST 实战
-- [notes/03-transformer-self-attention.md](notes/03-transformer-self-attention.md)：Transformer 自注意力机制推导
-- [notes/04-transformer-language-model.md](notes/04-transformer-language-model.md)：从位置编码到最小 Transformer 语言模型实现
-- [notes/05-subword-tokenization-and-gpt.md](notes/05-subword-tokenization-and-gpt.md)：从 byte-level BPE 到更像真实 GPT 的训练流程
+- [notes/01-MLP与MNIST：从数据预处理到训练流程.md](notes/01-MLP与MNIST：从数据预处理到训练流程.md)：MLP 手写数字识别
+- [notes/02-CNN与MNIST：从卷积直觉到图像分类实现.md](notes/02-CNN与MNIST：从卷积直觉到图像分类实现.md)：CNN 数学直觉与 MNIST 实战
+- [notes/03-自注意力机制：从Q、K、V到缩放点积注意力.md](notes/03-自注意力机制：从Q、K、V到缩放点积注意力.md)：Transformer 自注意力机制推导
+- [notes/04-Transformer语言模型：从位置编码到最小可训练实现.md](notes/04-Transformer语言模型：从位置编码到最小可训练实现.md)：从位置编码到最小 Transformer 语言模型实现
+- [notes/05-子词级GPT：从BPE到更像真实LLM的训练流程.md](notes/05-子词级GPT：从BPE到更像真实LLM的训练流程.md)：从 byte-level BPE 到更像真实 GPT 的训练流程
 
 ## 快速开始
 

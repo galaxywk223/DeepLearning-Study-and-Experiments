@@ -4,10 +4,10 @@
 
 这些笔记均整理自我的个人博客，仓库中的版本做了适当重写与归档，便于和项目代码一起阅读。
 
-- [01-mlp-mnist.md](01-mlp-mnist.md)：从数据预处理、模型结构到训练流程，梳理 MLP 在 MNIST 上的实现思路
-- [02-cnn-mnist.md](02-cnn-mnist.md)：从卷积的数学直觉出发，理解 CNN 如何处理图像任务
-- [03-transformer-self-attention.md](03-transformer-self-attention.md)：围绕 Q / K / V 与缩放点积注意力解释自注意力机制
-- [04-transformer-language-model.md](04-transformer-language-model.md)：把位置编码、带掩码的自注意力（masked self-attention）、前馈网络（FFN）和自回归训练串成一个最小 Transformer 语言模型
-- [05-subword-tokenization-and-gpt.md](05-subword-tokenization-and-gpt.md)：从字节级 BPE（byte-level BPE）、特殊词元（special tokens）、填充掩码（padding mask）到更像真实 GPT 的训练流程
+- [01-MLP与MNIST：从数据预处理到训练流程.md](01-MLP与MNIST：从数据预处理到训练流程.md)：从数据预处理、模型结构到训练流程，梳理 MLP 在 MNIST 上的实现思路
+- [02-CNN与MNIST：从卷积直觉到图像分类实现.md](02-CNN与MNIST：从卷积直觉到图像分类实现.md)：从卷积的数学直觉出发，理解 CNN 如何处理图像任务
+- [03-自注意力机制：从Q、K、V到缩放点积注意力.md](03-自注意力机制：从Q、K、V到缩放点积注意力.md)：围绕 Q / K / V 与缩放点积注意力解释自注意力机制
+- [04-Transformer语言模型：从位置编码到最小可训练实现.md](04-Transformer语言模型：从位置编码到最小可训练实现.md)：把位置编码、带掩码的自注意力（masked self-attention）、前馈网络（FFN）和自回归训练串成一个最小 Transformer 语言模型
+- [05-子词级GPT：从BPE到更像真实LLM的训练流程.md](05-子词级GPT：从BPE到更像真实LLM的训练流程.md)：从字节级 BPE（byte-level BPE）、特殊词元（special tokens）、填充掩码（padding mask）到更像真实 GPT 的训练流程
 
 图片资源统一存放在 `../assets/images/`。
