@@ -57,7 +57,7 @@ python train_mlp.py --epochs 3 --output-dir outputs/dev-runs
 ## 项目结构
 
 ```text
-mnist-cnn-experiments/
+01-mnist-cnn-experiments/
 ├─ data/                 # local, gitignored
 ├─ mnist_experiments/
 │  ├─ cli.py

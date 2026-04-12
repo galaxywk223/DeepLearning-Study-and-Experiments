@@ -74,7 +74,7 @@
 
 下面这张图来自受版本控制的精选实验资源，用来观察 `transformer v3` 的训练集 / 验证集 loss 下降趋势：
 
-![Transformer v3 loss curve](../../assets/images/char-transformer/transformer-v3-loss-curve.png)
+![Transformer v3 loss curve](../../assets/images/04-char-transformer/transformer-v3-loss-curve.png)
 
 从这次运行可以看到：
 
@@ -174,7 +174,7 @@ python train_transformer.py --epochs 2 --steps-per-epoch 20 --eval-steps 5 --blo
 
 推荐：
 
-- 直接在 `projects/char-transformer-experiments/` 目录下运行命令
+- 直接在 `projects/03-char-transformer-experiments/` 目录下运行命令
 - 即使从仓库根目录启动，默认数据和输出现在也会落到当前项目目录，不会再污染仓库根目录
 
 ## 输出文件
@@ -196,7 +196,7 @@ python train_transformer.py --epochs 2 --steps-per-epoch 20 --eval-steps 5 --blo
 ## 项目结构
 
 ```text
-char-transformer-experiments/
+03-char-transformer-experiments/
 ├─ data/                               # local, gitignored
 ├─ char_transformer_experiments/
 │  ├─ cli.py

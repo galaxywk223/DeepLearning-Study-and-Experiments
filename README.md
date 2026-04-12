@@ -9,7 +9,7 @@
 
 ### MNIST Experiments
 
-项目路径：[projects/mnist-cnn-experiments/README.md](projects/mnist-cnn-experiments/README.md)
+项目路径：[projects/01-mnist-cnn-experiments/README.md](projects/01-mnist-cnn-experiments/README.md)
 
 - `MLP baseline`：测试集准确率 `96.12%`
 - `CNN improved`：测试集准确率 `99.47%`
@@ -17,7 +17,7 @@
 
 ### CIFAR-10 CNN Experiments
 
-项目路径：[projects/cifar10-cnn-experiments/README.md](projects/cifar10-cnn-experiments/README.md)
+项目路径：[projects/02-cifar10-cnn-experiments/README.md](projects/02-cifar10-cnn-experiments/README.md)
 
 - `baseline`：测试集准确率 `73.25%`
 - `improved`：测试集准确率 `87.35%`
@@ -26,7 +26,7 @@
 
 ### Character Transformer Experiments
 
-项目路径：[projects/char-transformer-experiments/README.md](projects/char-transformer-experiments/README.md)
+项目路径：[projects/03-char-transformer-experiments/README.md](projects/03-char-transformer-experiments/README.md)
 
 - `bigram`：最小字符级 next-token baseline
 - `transformer`：带位置编码、因果掩码、多头注意力和 FFN 的 decoder-only Transformer
@@ -37,10 +37,10 @@
 
 笔记索引见 [notes/README.md](notes/README.md)。
 
-- [notes/mlp-mnist.md](notes/mlp-mnist.md)：MLP 手写数字识别
-- [notes/cnn-mnist.md](notes/cnn-mnist.md)：CNN 数学直觉与 MNIST 实战
-- [notes/transformer-self-attention.md](notes/transformer-self-attention.md)：Transformer 自注意力机制推导
-- [notes/transformer-language-model.md](notes/transformer-language-model.md)：从位置编码到最小 Transformer 语言模型实现
+- [notes/01-mlp-mnist.md](notes/01-mlp-mnist.md)：MLP 手写数字识别
+- [notes/02-cnn-mnist.md](notes/02-cnn-mnist.md)：CNN 数学直觉与 MNIST 实战
+- [notes/03-transformer-self-attention.md](notes/03-transformer-self-attention.md)：Transformer 自注意力机制推导
+- [notes/04-transformer-language-model.md](notes/04-transformer-language-model.md)：从位置编码到最小 Transformer 语言模型实现
 
 ## 快速开始
 
@@ -49,7 +49,7 @@
 ### MNIST
 
 ```bash
-cd projects/mnist-cnn-experiments
+cd projects/01-mnist-cnn-experiments
 pip install -r ../requirements.txt
 python train_mlp.py
 python train_cnn.py
@@ -58,7 +58,7 @@ python train_cnn.py
 ### CIFAR-10
 
 ```bash
-cd projects/cifar10-cnn-experiments
+cd projects/02-cifar10-cnn-experiments
 pip install -r ../requirements.txt
 python train_baseline.py
 python train_improved.py
@@ -68,7 +68,7 @@ python train_resnet.py
 ### Character Transformer
 
 ```bash
-cd projects/char-transformer-experiments
+cd projects/03-char-transformer-experiments
 pip install -r ../requirements.txt
 python train_bigram.py
 python train_transformer.py
@@ -89,9 +89,9 @@ DeepLearning/
 │  └─ images/
 ├─ projects/
 │  ├─ requirements.txt
-│  ├─ mnist-cnn-experiments/
-│  ├─ cifar10-cnn-experiments/
-│  └─ char-transformer-experiments/
+│  ├─ 01-mnist-cnn-experiments/
+│  ├─ 02-cifar10-cnn-experiments/
+│  └─ 03-char-transformer-experiments/
 └─ README.md
 ```
 

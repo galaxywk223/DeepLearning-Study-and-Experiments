@@ -105,7 +105,7 @@ Windows + CUDA 建议：
 ## 项目结构
 
 ```text
-cifar10-cnn-experiments/
+02-cifar10-cnn-experiments/
 ├─ data/                 # local, gitignored
 ├─ cifar10_experiments/
 │  ├─ cli.py
