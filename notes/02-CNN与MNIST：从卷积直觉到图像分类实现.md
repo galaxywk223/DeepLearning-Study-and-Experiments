@@ -21,29 +21,29 @@
 
 > 为了简化演示，仍然使用 6 面骰子，并假设每个面朝上的概率不同
 
-> ![骰子概率表格示意图](../assets/images/02-cnn-mnist/0505f9afc6aa47e69fabc9253073a5f4.png)
+> <img src="../assets/images/02-cnn-mnist/0505f9afc6aa47e69fabc9253073a5f4.png" alt="骰子概率表格示意图" width="50%">
 
 
 如果要找点数和为 `6` 的情况，只需要把下标和为 `6` 的格子取出来。它们恰好落在从右上到左下的一条直线上：
 
-> ![点数和为 6 的对角线示意图](../assets/images/02-cnn-mnist/4b1ca22dbeeb45bcb8fc2844a5baa5f8.png)
+> <img src="../assets/images/02-cnn-mnist/4b1ca22dbeeb45bcb8fc2844a5baa5f8.png" alt="点数和为 6 的对角线示意图" width="50%">
 
 
 每个格子的概率，都是两个骰子对应点数概率的乘积，因为两个事件独立。
 
 如果把其中一侧的排列顺序反过来，会更容易看出“滑动求和”的结构：
 
-> ![翻转排列后的滑动结构示意图](../assets/images/02-cnn-mnist/5490e8bfbe8a42a2b7178d4bc81380d2.png)
+> <img src="../assets/images/02-cnn-mnist/5490e8bfbe8a42a2b7178d4bc81380d2.png" alt="翻转排列后的滑动结构示意图" width="50%">
 
 
 这样一来，原本的对角线关系就更接近“从左上到右下的滑动窗口”。
 
-> ![滑动窗口对齐示意图](../assets/images/02-cnn-mnist/a9d136005fda4ae5aa05fa98c80808b4.png)
+> <img src="../assets/images/02-cnn-mnist/a9d136005fda4ae5aa05fa98c80808b4.png" alt="滑动窗口对齐示意图" width="50%">
 
 
 接下来只保留和当前目标有关的部分，其余位置用空白补齐：
 
-> ![局部窗口保留示意图](../assets/images/02-cnn-mnist/9b735fe6e83f4c70bb4f1fa1edb2e3c5.png)
+> <img src="../assets/images/02-cnn-mnist/9b735fe6e83f4c70bb4f1fa1edb2e3c5.png" alt="局部窗口保留示意图" width="72%">
 
 
 这时就已经能看到卷积的雏形了。点数和为 `6` 的概率可以写成：
@@ -52,13 +52,13 @@ P=p_{51}+p_{42}+p_{33}+p_{42}+p_{51}
 $$
 如果要求点数和为 `5`，只是把这个窗口继续平移：
 
-> ![窗口继续平移示意图](../assets/images/02-cnn-mnist/503c253009f8480790f80f9d1034f57a.png)
+> <img src="../assets/images/02-cnn-mnist/503c253009f8480790f80f9d1034f57a.png" alt="窗口继续平移示意图" width="62%">
 
 
 也就是说，“求点数和的分布”可以理解成“把一个窗口滑过去，并在每个位置做乘积求和”。
 
 如果两个序列长度不同，这个过程也一样成立。可以画成下面这样的滑动示意：
->![不同长度序列的滑动示意图](../assets/images/02-cnn-mnist/6e09481e5b204df2b8affb3e25e5ab5b.png)
+> <img src="../assets/images/02-cnn-mnist/6e09481e5b204df2b8affb3e25e5ab5b.png" alt="不同长度序列的滑动示意图" width="62%">
 
 
 只需要让小滑块在左右移动即可。遇到边界时，只计算重叠部分。
@@ -76,11 +76,11 @@ $$
 上面的概率例子说明了卷积和“滑动求和”有关。下面换一个更接近信号处理的例子来继续建立直觉。
 
 假设有一个数组 `[5, 2, 8, 1, 6, 3, 7, 4, 9, 0]`，它表示一段一维信号：
-> ![一维信号示意图](../assets/images/02-cnn-mnist/9bfa53aaef0a45bc8c6b770ecc58f486.png)
+> <img src="../assets/images/02-cnn-mnist/9bfa53aaef0a45bc8c6b770ecc58f486.png" alt="一维信号示意图" width="62%">
 
 
 这组数据波动较大。如果想让它更平滑，可以定义一个简单的卷积核 `[1/3, 1/3, 1/3]`。它的作用，就是在每个位置取一个局部窗口，对邻近值做平均。
-> ![均值卷积核示意图](../assets/images/02-cnn-mnist/e37001573f87444f8509f53d099ebaed.png)
+> <img src="../assets/images/02-cnn-mnist/e37001573f87444f8509f53d099ebaed.png" alt="均值卷积核示意图" width="62%">
 
 
 例如把长度为 `3` 的窗口放到索引 `[3,4,5]` 上，对应位置逐项相乘再求和：
@@ -88,7 +88,7 @@ $$
 `arr[5] * 1/3 + arr[4] * 1/3 + arr[3] * 1/3 = (3 + 6 + 1) / 3 = 3.333`
 
 这个结果就可以作为新序列中间位置的值。对所有位置重复这个过程，就会得到新的平滑信号。边界之外的部分可视为 `0`：
-> ![平滑后信号示意图](../assets/images/02-cnn-mnist/331d071b65004550bc264cd8720313ac.png)
+> <img src="../assets/images/02-cnn-mnist/331d071b65004550bc264cd8720313ac.png" alt="平滑后信号示意图" width="62%">
 
 
 新信号之所以更平滑，是因为每个位置不再只依赖自身，而是同时参考了邻近位置。这个“滑动窗口”就是卷积核，它决定了局部信息如何被组合。
@@ -102,7 +102,7 @@ $$(y)[n]=(x*h)[n]=\sum_{k=-\infty}^{+\infty}x[k]\cdot h[n-k]$$
 还有一个常见细节：严格的数学卷积会涉及卷积核翻转，而很多深度学习库在工程实现里通常直接使用互相关（cross-correlation）的写法。入门时先把它理解为“窗口滑动、逐项相乘、再求和”即可。
 
 下图展示了这种对齐关系：
-> ![卷积对齐关系示意图](../assets/images/02-cnn-mnist/9ed485ded2384bce9565db673d088d5b.png)
+> <img src="../assets/images/02-cnn-mnist/9ed485ded2384bce9565db673d088d5b.png" alt="卷积对齐关系示意图" width="62%">
 
 
 按照图中的虚线对应关系逐项相乘并累加，就完成了一次卷积运算。
@@ -112,11 +112,11 @@ $$(y)[n]=(x*h)[n]=\sum_{k=-\infty}^{+\infty}x[k]\cdot h[n-k]$$
 把这个思路从一维推广到二维，就得到了图像中的卷积操作。
 
 假设有一张二维灰度图像（`1` 表示纯白，`0` 表示纯黑）：
-> ![二维灰度图像示意图](../assets/images/02-cnn-mnist/b7c64a37fa5648c8ad1b700a658800c0.png)
+> <img src="../assets/images/02-cnn-mnist/b7c64a37fa5648c8ad1b700a658800c0.png" alt="二维灰度图像示意图" width="50%">
 
 
 定义一个和一维情况类似的局部窗口操作：
-> ![二维卷积窗口示意图](../assets/images/02-cnn-mnist/55a282bac1d942238e8e1ce3a6b6604b.png)
+> <img src="../assets/images/02-cnn-mnist/55a282bac1d942238e8e1ce3a6b6604b.png" alt="二维卷积窗口示意图" width="50%">
 
 
 上图中，`arr[5][6]` 与淡蓝色 `3x3` 方格中心对齐。新的 `arr[5][6]` 值，来自这个局部窗口内逐项相乘再求和。把同样的操作应用到所有位置后，可以得到新的特征图：
@@ -137,7 +137,7 @@ $$(y)[n]=(x*h)[n]=\sum_{k=-\infty}^{+\infty}x[k]\cdot h[n-k]$$
 > 0.000 0.000 0.000 0.333 0.333 0.333 0.000 0.000
 
 我们把它可视化出来：
-> ![卷积后特征图可视化](../assets/images/02-cnn-mnist/2be481368aa2487b92ef58d23fbfcff6.png)
+> <img src="../assets/images/02-cnn-mnist/2be481368aa2487b92ef58d23fbfcff6.png" alt="卷积后特征图可视化" width="62%">
 
 
 这里可以注意到，卷积后的特征图尺寸变小了。这是因为卷积核在滑动时没有覆盖边缘之外的区域。若希望输入和输出保持同样大小，就需要使用零填充（zero-padding）。例如 `3x3` 卷积核通常需要补一圈像素，`5x5` 卷积核则需要补两圈。
@@ -188,39 +188,39 @@ test_dataset = datasets.MNIST(
 这里和 MLP 的一个关键区别是：输入不再在一开始就展平。卷积层必须保留图像的二维结构，否则局部空间关系就会丢失。
 
 展平操作并没有消失，只是被推迟到了卷积和池化完成之后，再接入全连接分类层。整体流程如下：
-> ![CNN 整体流程示意图](../assets/images/02-cnn-mnist/0df967979d154160ad745a7c901a3b34.png)
+> <img src="../assets/images/02-cnn-mnist/0df967979d154160ad745a7c901a3b34.png" alt="CNN 整体流程示意图" width="62%">
 
 
 这里使用两层卷积是一个比较常见的入门配置，目的是在模型复杂度和训练成本之间做一个平衡。下面结合一个数字 `7` 的例子看一下中间特征。
 
 
 输入灰度手写数字7图片
-> ![输入灰度手写数字 7 图片](../assets/images/02-cnn-mnist/89d0e0c3a5524e9ba26fd17845194130.png)
+> <img src="../assets/images/02-cnn-mnist/89d0e0c3a5524e9ba26fd17845194130.png" alt="输入灰度手写数字 7 图片" width="50%">
 
 
 第一层使用 `16` 个卷积核，因此会得到 `16` 张特征图：
-> ![第一层卷积特征图示意图](../assets/images/02-cnn-mnist/7b30375bc1d043ebaa7ef4ce63afc77a.png)
+> <img src="../assets/images/02-cnn-mnist/7b30375bc1d043ebaa7ef4ce63afc77a.png" alt="第一层卷积特征图示意图" width="50%">
 
 这里的卷积核不是手工设计的，而是在训练过程中通过反向传播自动学习得到的。不同卷积核会对不同局部模式产生响应，因此得到的特征图也会不同。
 
 得到特征图之后，先施加 ReLU，再进入池化层。
 
 池化（Pooling）负责进一步压缩空间尺寸。以最常见的 `2x2` 最大池化为例，它会在每个局部窗口里保留最大响应：
-> ![最大池化示意图](../assets/images/02-cnn-mnist/d8db652a6dc2496fad6377b408694bf1.png)
+> <img src="../assets/images/02-cnn-mnist/d8db652a6dc2496fad6377b408694bf1.png" alt="最大池化示意图" width="62%">
 
 
 使用 `2x2` 池化时，特征图的高和宽都会减半，因此空间尺寸会缩小到原来的 `1/4`。这样做既能减少计算量，也能保留局部最显著的响应。
 
 池化后的图片像下面这样：
-> ![池化后的特征图示意图](../assets/images/02-cnn-mnist/6992c40592c841f397babcf42292973b.png)
+> <img src="../assets/images/02-cnn-mnist/6992c40592c841f397babcf42292973b.png" alt="池化后的特征图示意图" width="50%">
 
 
 随后重复相同流程，再做一层卷积。这一层把通道数从 `16` 增加到 `32`：
-> ![第二层卷积特征图示意图](../assets/images/02-cnn-mnist/293026207ec040a1ae49071d917893a8.png)
+> <img src="../assets/images/02-cnn-mnist/293026207ec040a1ae49071d917893a8.png" alt="第二层卷积特征图示意图" width="62%">
 
 
 接着继续通过激活函数，再池化处理，如下图所示：
-> ![激活与池化后的高层特征图示意图](../assets/images/02-cnn-mnist/8aca09515e9f4c30890a386efd87846c.png)
+> <img src="../assets/images/02-cnn-mnist/8aca09515e9f4c30890a386efd87846c.png" alt="激活与池化后的高层特征图示意图" width="62%">
 
 
 到这里，特征图虽然已经不像原始数字图像，但其中保留的是更适合分类器使用的高层特征。接下来就可以像 MLP 一样接全连接层做分类。
