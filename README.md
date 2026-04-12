@@ -2,7 +2,7 @@
 
 这个仓库包含两个方向的内容：
 
-- 深度学习实验项目：围绕 MNIST、CIFAR-10 和字符级语言模型构建可运行、可对比的 PyTorch 训练代码
+- 深度学习实验项目：围绕 MNIST、CIFAR-10、字符级 Transformer 和子词级 GPT 构建可运行、可对比的 PyTorch 训练代码
 - 学习笔记：记录模型原理、数学直觉和实现过程
 
 ## 项目概览
@@ -33,6 +33,15 @@
 - 最新结果：`transformer v3` 验证集 `perplexity = 4.63`
 - 重点：把自注意力笔记继续推进到可训练、可生成文本的最小语言模型实现，并支持不同 `temperature` 的生成对比
 
+### Subword GPT Experiments
+
+项目路径：[projects/04-subword-gpt-experiments/README.md](projects/04-subword-gpt-experiments/README.md)
+
+- `byte-level BPE tokenizer`：从原始文本自动学习 merge 规则
+- `subword GPT`：带 special tokens、padding mask、weight tying 的 decoder-only GPT
+- 最新结果：`subword-gpt v1` 验证集 `perplexity = 19.51`
+- 重点：把字符级教学版 Transformer 继续推进到更像真实 LLM 训练流程的 tokenizer + GPT 项目
+
 ## 笔记目录
 
 笔记索引见 [notes/README.md](notes/README.md)。
@@ -41,6 +50,7 @@
 - [notes/02-cnn-mnist.md](notes/02-cnn-mnist.md)：CNN 数学直觉与 MNIST 实战
 - [notes/03-transformer-self-attention.md](notes/03-transformer-self-attention.md)：Transformer 自注意力机制推导
 - [notes/04-transformer-language-model.md](notes/04-transformer-language-model.md)：从位置编码到最小 Transformer 语言模型实现
+- [notes/05-subword-tokenization-and-gpt.md](notes/05-subword-tokenization-and-gpt.md)：从 byte-level BPE 到更像真实 GPT 的训练流程
 
 ## 快速开始
 
@@ -75,9 +85,18 @@ python train_transformer.py
 python generate_samples.py --run-dir outputs/tinyshakespeare-transformer-v3 --temperatures 0.6 0.75 0.9
 ```
 
+### Subword GPT
+
+```bash
+cd projects/04-subword-gpt-experiments
+pip install -r ../requirements.txt
+python train_gpt.py --experiment-name tinyshakespeare-subword-gpt-v1 --epochs 12 --steps-per-epoch 250 --eval-steps 50 --batch-size 12 --grad-accum-steps 2 --block-size 160 --min-sequence-length 48 --embedding-dim 256 --num-heads 8 --num-layers 8 --dropout 0.15 --learning-rate 3e-4 --min-learning-rate 3e-5 --warmup-steps 150 --weight-decay 0.1 --grad-clip 1.0 --tokenizer-vocab-size 512 --device cuda --use-amp
+python generate_samples.py --run-dir outputs/tinyshakespeare-subword-gpt-v1 --temperatures 0.6 0.8 1.0 --top-k 40 --top-p 0.95
+```
+
 说明：
 
-- 三个实验项目现在都会默认把数据和输出写入各自项目目录
+- 四个实验项目现在都会默认把数据和输出写入各自项目目录
 - 仍然可以通过 `--data-dir` 和 `--output-dir` 覆盖默认路径
 
 ## 仓库结构
@@ -91,7 +110,8 @@ DeepLearning/
 │  ├─ requirements.txt
 │  ├─ 01-mnist-cnn-experiments/
 │  ├─ 02-cifar10-cnn-experiments/
-│  └─ 03-char-transformer-experiments/
+│  ├─ 03-char-transformer-experiments/
+│  └─ 04-subword-gpt-experiments/
 └─ README.md
 ```
 

@@ -6,12 +6,12 @@
 
 如果把目标压缩成一句话，就是：
 
-- 输入离散 token，需要先变成可学习向量
+- 输入离散词元（token），需要先变成可学习向量
 - 序列有先后顺序，需要注入位置信息
-- 预测下一个 token 时，当前位置不能偷看未来，需要因果掩码
+- 预测下一个词元时，当前位置不能偷看未来，需要因果掩码
 - 单头注意力表达能力有限，需要多头注意力
 - 只做注意力还不够，需要前馈网络增强逐位置变换能力
-- 深层堆叠要稳定训练，需要残差连接和 LayerNorm
+- 深层堆叠要稳定训练，需要残差连接和层归一化（LayerNorm）
 
 这也是这次实验项目的主线：用字符级语言建模任务，把这些模块真正连起来。
 
@@ -35,7 +35,7 @@ $$
 - 输出是标准的分类问题
 - 因果掩码的作用非常直观
 
-## Token Embedding：先把离散符号变成向量
+## 词元嵌入（Token Embedding）：先把离散符号变成向量
 
 模型无法直接处理字符 `'a'`、`'b'`、`'?'` 这样的离散符号，所以第一步通常是建立词表，并把每个字符映射到整数 id。
 
@@ -51,15 +51,15 @@ $$
 (batch_size, sequence_length)
 ```
 
-那么 token embedding 后的张量通常是：
+那么词元嵌入（token embedding）后的张量通常是：
 
 ```text
 (batch_size, sequence_length, embedding_dim)
 ```
 
-这里可以把 embedding 理解为离散符号的可学习查表，也是后续注意力和前馈网络真正操作的对象。
+这里可以把嵌入（embedding）理解为离散符号的可学习查表，也是后续注意力和前馈网络真正操作的对象。
 
-## Positional Encoding：告诉模型顺序
+## 位置编码（Positional Encoding）：告诉模型顺序
 
 自注意力本身只关心“谁和谁相关”，并不天然区分第一个字符和第十个字符。
 
@@ -90,7 +90,7 @@ $$
 P=\text{Embedding}(position)
 $$
 
-然后把 token embedding 和 position embedding 相加：
+然后把词元嵌入（token embedding）和位置嵌入（position embedding）相加：
 
 $$
 X=E+P
@@ -132,7 +132,7 @@ $$
 
 这一步的本质不是“模型学会不看未来”，而是“结构上禁止它看未来”。
 
-## Multi-Head Attention：不只看一种关联
+## 多头注意力（Multi-Head Attention）：不只看一种关联
 
 单头注意力只能在一个投影空间里建模关联，这会让表达能力偏单一。
 
@@ -148,9 +148,9 @@ $$
 \text{MultiHead}(X)=\text{Concat}(head_1,\dots,head_h)W_O
 $$
 
-其中每个 `head_i` 都是一次独立的 masked self-attention。
+其中每个 `head_i` 都是一次独立的带掩码自注意力（masked self-attention）。
 
-## Feed-Forward Network：逐位置的非线性变换
+## 前馈网络（Feed-Forward Network）：逐位置的非线性变换
 
 注意力负责的是“位置之间如何交换信息”，但每个位置本身也需要做更强的非线性变换。
 
@@ -168,7 +168,7 @@ $$
 
 这一层是逐位置独立作用的，不负责位置间通信，但它能显著提高表示能力。
 
-## 残差连接与 LayerNorm：让深层堆叠更稳定
+## 残差连接与层归一化（LayerNorm）：让深层堆叠更稳定
 
 一个标准 Transformer block 常写成：
 
@@ -179,9 +179,9 @@ x = x + FFN(LN(x))
 
 这就是常见的 pre-norm 结构。
 
-残差连接让信息和梯度有一条更直接的通路，LayerNorm 则帮助数值分布保持稳定。对序列模型来说，它比 BatchNorm 更自然，因为它不依赖 batch 统计量。
+残差连接让信息和梯度有一条更直接的通路，层归一化（LayerNorm）则帮助数值分布保持稳定。对序列模型来说，它比批归一化（BatchNorm）更自然，因为它不依赖 batch 统计量。
 
-## 一个最小 Decoder-Only Transformer 长什么样
+## 一个最小解码器式 Transformer（Decoder-Only Transformer）长什么样
 
 如果把字符级语言模型的最小结构压缩一下，可以写成：
 
