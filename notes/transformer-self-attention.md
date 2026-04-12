@@ -17,22 +17,15 @@
 假设有一组输入序列：
 
 $$
-X=\left[ \begin{array}{c}
-\t1\\
-\t2\\
-\t3\\
-\end{array} \right] \left[ \begin{array}{c}
-\t1\\
-\t2\\
-\t5\\
-\end{array} \right] \left[ \begin{array}{c}
-\t0\\
-\t2\\
-\t0\\
-\end{array} \right] ...
+X=
+\begin{bmatrix}
+1 & 1 & 0 & \cdots \\
+2 & 2 & 2 & \cdots \\
+3 & 5 & 0 & \cdots
+\end{bmatrix}
 $$
 
-其中每个列向量都可以理解为一个 token 的表示，记为：
+其中每一列都可以理解为一个 token 的表示，记为：
 
 $$
 X=\left( x_1,x_2,x_3,... \right)

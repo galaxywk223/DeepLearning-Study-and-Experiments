@@ -20,7 +20,7 @@
 语言模型的目标可以写成：
 
 $$
-P(x_1,x_2,\dots,x_T)=\prod_{t=1}^{T}P(x_t\mid x_{<t})
+P(x_1,x_2,\dots,x_T)=\prod_{t=1}^{T}P(x_t\mid x_{1:t-1})
 $$
 
 如果把它放到字符级任务里理解，就是：
@@ -216,7 +216,7 @@ LayerNorm
 假设词表大小是 `V`，那么每个时间步输出一个长度为 `V` 的 logits 向量。真实标签是“下一个字符”的 id，因此依然使用交叉熵损失：
 
 $$
-\mathcal{L} = -\sum_t \log P(x_{t+1}\mid x_{\le t})
+\mathcal{L} = -\sum_t \log P(x_{t+1}\mid x_{1:t})
 $$
 
 实现时通常把：
