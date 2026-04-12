@@ -1,4 +1,4 @@
-# Transformer 语言模型：从位置编码到最小可训练实现
+# Transformer 语言模型（Transformer Language Model）：从位置编码到最小可训练实现
 
 这篇笔记延续前一篇自注意力笔记，但重点不再只是解释 `Q / K / V`，而是回答另一个更实际的问题：
 

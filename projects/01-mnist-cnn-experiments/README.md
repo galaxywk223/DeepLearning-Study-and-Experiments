@@ -1,4 +1,4 @@
-# MNIST Experiments
+# MNIST 实验
 
 这个项目使用 PyTorch 在 MNIST 手写数字识别任务上实现了两个版本：
 
@@ -9,10 +9,10 @@
 
 以下结果来自本地 CUDA 环境的最新一次完整运行：
 
-| Model        | Epochs | Batch Size | Augmentation      | Best Test Accuracy | Final Test Loss |
-| ------------ | -----: | ---------: | ----------------- | -----------------: | --------------: |
-| MLP baseline |     10 |         64 | None              |             96.12% |          0.1337 |
-| CNN improved |     15 |         64 | RandomRotation(5) |             99.47% |          0.0192 |
+| 模型         | 轮数 | 批大小 | 数据增强          | 最佳测试准确率 | 最终测试损失 |
+| ------------ | ---: | -----: | ----------------- | -------------: | -----------: |
+| MLP baseline |   10 |     64 | None              |         96.12% |       0.1337 |
+| CNN improved |   15 |     64 | RandomRotation(5) |         99.47% |       0.0192 |
 
 对比结论：
 

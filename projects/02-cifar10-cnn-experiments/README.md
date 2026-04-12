@@ -1,4 +1,4 @@
-# CIFAR-10 CNN Experiments
+# CIFAR-10 CNN 实验
 
 这个项目围绕 CIFAR-10 图像分类任务实现了三个版本：
 
@@ -48,11 +48,11 @@
 
 以下结果来自本地 CUDA 环境的实际运行产物：
 
-| Variant  | Epochs | Batch Size | Best Test Accuracy | Final Test Loss | Notes                                            |
-| -------- | -----: | ---------: | -----------------: | --------------: | ------------------------------------------------ |
-| baseline |     20 |        128 |             73.25% |          1.1329 | 简单 CNN，无增强                                 |
-| improved |     30 |        256 |             87.35% |          0.8294 | 更深 CNN + 增强 + AdamW + Cosine + AMP           |
-| resnet   |    100 |        128 |             95.33% |          0.6180 | 残差网络 + SGD + MultiStep + AMP + RandomErasing |
+| 版本     | 轮数 | 批大小 | 最佳测试准确率 | 最终测试损失 | 说明                                             |
+| -------- | ---: | -----: | -------------: | -----------: | ------------------------------------------------ |
+| baseline |   20 |    128 |         73.25% |       1.1329 | 简单 CNN，无增强                                 |
+| improved |   30 |    256 |         87.35% |       0.8294 | 更深 CNN + 增强 + AdamW + Cosine + AMP           |
+| resnet   |  100 |    128 |         95.33% |       0.6180 | 残差网络 + SGD + MultiStep + AMP + RandomErasing |
 
 对比结论：
 

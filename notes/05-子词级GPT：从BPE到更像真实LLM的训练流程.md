@@ -1,4 +1,4 @@
-# 子词级 GPT：从 BPE 到更像真实 LLM 的训练流程
+# 子词级 GPT（Subword GPT）：从 BPE 到更像真实 LLM 的训练流程
 
 前一篇笔记里，Transformer 语言模型还是字符级的。
 

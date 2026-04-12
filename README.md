@@ -7,7 +7,7 @@
 
 ## 项目概览
 
-### MNIST Experiments
+### MNIST 实验
 
 项目路径：[projects/01-mnist-cnn-experiments/README.md](projects/01-mnist-cnn-experiments/README.md)
 
@@ -15,7 +15,7 @@
 - `CNN improved`：测试集准确率 `99.47%`
 - 重点：从全连接基线升级到卷积模型，并完成训练流程模块化、结果落盘和可视化输出
 
-### CIFAR-10 CNN Experiments
+### CIFAR-10 CNN 实验
 
 项目路径：[projects/02-cifar10-cnn-experiments/README.md](projects/02-cifar10-cnn-experiments/README.md)
 
@@ -24,7 +24,7 @@
 - `resnet`：测试集准确率 `95.33%`
 - 重点：沿着简单 CNN、工程化优化版、残差网络三条线做出清晰的性能迭代
 
-### Character Transformer Experiments
+### 字符级 Transformer 实验（Character Transformer）
 
 项目路径：[projects/03-char-transformer-experiments/README.md](projects/03-char-transformer-experiments/README.md)
 
@@ -33,7 +33,7 @@
 - 最新结果：`transformer v3` 验证集 `perplexity = 4.63`
 - 重点：把自注意力笔记继续推进到可训练、可生成文本的最小语言模型实现，并支持不同 `temperature` 的生成对比
 
-### Subword GPT Experiments
+### 子词级 GPT 实验（Subword GPT）
 
 项目路径：[projects/04-subword-gpt-experiments/README.md](projects/04-subword-gpt-experiments/README.md)
 
@@ -41,6 +41,25 @@
 - `subword GPT`：带 special tokens、padding mask、weight tying 的 decoder-only GPT
 - 最新结果：`subword-gpt v1` 验证集 `perplexity = 19.51`
 - 重点：把字符级教学版 Transformer 继续推进到更像真实 LLM 训练流程的 tokenizer + GPT 项目
+
+## 语言模型对比
+
+下面这张表把当前仓库中两条语言模型主线并排放在一起。需要注意：
+
+- `char-transformer v3` 和 `subword-gpt v1` 的 token 粒度不同
+- 因此 `perplexity` 不能直接横向当作绝对优劣结论
+- 更合适的理解方式是：它们分别代表“最小字符级教学版 Transformer”和“更接近真实 GPT 工作流的子词级模型”
+
+| 模型                | 词元粒度（Tokenization） | 参数量    | 上下文长度 / `block_size` | 最佳验证损失 | 最佳验证困惑度 | 对外可展示的核心意义                                              |
+| ------------------- | ------------------------ | --------: | -------------------------: | -----------: | -------------: | ----------------------------------------------------------------- |
+| char-transformer v3 | character-level          | 2,286,593 |                        192 |       1.5333 |           4.63 | 字符级生成质量更强，能稳定学到对白格式、角色名和局部句式          |
+| subword-gpt v1      | byte-level BPE           | 6,490,624 |                        160 |       2.9711 |          19.51 | 工程形态更接近真实 GPT，补齐 tokenizer、special tokens 和 padding |
+
+当前阶段可以这样理解：
+
+- 如果目标是解释 Transformer 机制和最小语言模型原理，`char-transformer v3` 更直观
+- 如果目标是向真实 LLM 训练流程靠近，`subword-gpt v1` 是更重要的下一步
+- 这两个项目不是互相替代，而是前后衔接的两站
 
 ## 笔记目录
 
@@ -75,7 +94,7 @@ python train_improved.py
 python train_resnet.py
 ```
 
-### Character Transformer
+### 字符级 Transformer
 
 ```bash
 cd projects/03-char-transformer-experiments
@@ -85,7 +104,7 @@ python train_transformer.py
 python generate_samples.py --run-dir outputs/tinyshakespeare-transformer-v3 --temperatures 0.6 0.75 0.9
 ```
 
-### Subword GPT
+### 子词级 GPT
 
 ```bash
 cd projects/04-subword-gpt-experiments
