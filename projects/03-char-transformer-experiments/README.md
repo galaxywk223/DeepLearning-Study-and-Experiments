@@ -1,8 +1,6 @@
 # 字符级 Transformer 实验
 
-这个项目把“自注意力公式”真正推进成一个可训练、可生成、可对比的最小语言模型实现。
-
-它的展示重点不是做一个大模型，而是把 Transformer 语言模型最核心的一条实现主线彻底走通。
+这个项目实现的是一条最小字符级语言模型实验线，从 bigram 到 Transformer。
 
 ## 项目定位
 
@@ -19,17 +17,15 @@
 | `transformer v2` | 12 | 48 | 192 | 2,286,593 | `1.6733` | `5.33` |
 | `transformer v3` | 18 | 48 | 192 | 2,286,593 | `1.5333` | `4.63` |
 
-这条线最重要的信息是：
-
 - 从 `bigram` 到 `transformer v3`，验证集困惑度从 `12.73` 下降到 `4.63`。
 - `transformer v3` 已经能比较稳定地学到 Shakespeare 风格对白的排版和局部句式。
-- 这个项目非常适合和笔记一起阅读，因为“公式”和“代码”可以一一对上。
+- 这组结果可以和对应笔记一起看。
 
 ## 精选展示
 
 ![Character Transformer v3 loss curve](../../assets/showcase/char-transformer-v3-loss-curve.png)
 
-上面这张曲线图来自整理后的精选展示资源，用来保留对外最有价值的收敛证据。
+这张图展示了 `transformer v3` 的收敛情况。
 
 ## 生成样例摘录
 
@@ -44,7 +40,7 @@ My good daughter them against with soft a noble offence,
 As I am, the should seem down, as which may me?
 ```
 
-它当然还不是真正可用的语言模型，但已经能明显看出：
+这段样例还谈不上稳定生成，但已经能看出：
 
 - 对白格式开始稳定
 - 角色说话的局部语气更像戏剧文本

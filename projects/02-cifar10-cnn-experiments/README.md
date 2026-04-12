@@ -1,8 +1,6 @@
 # CIFAR-10 CNN 实验
 
-这个项目是仓库里最明显的“性能迭代线”。
-
-它把 CIFAR-10 图像分类拆成三个连续版本，让读者能直接看到：简单 CNN 够不够、工程化训练策略能带来多少收益、什么时候需要切到 ResNet。
+这个项目围绕 CIFAR-10 做了三版图像分类实验：简单 CNN、改进版 CNN 和 ResNet。
 
 ## 项目定位
 
@@ -18,17 +16,15 @@
 | `improved` | 30 | 256 | `87.35%` | `0.8294` | 更深 CNN + 增强 + AdamW + Cosine + AMP |
 | `resnet` | 100 | 128 | `95.33%` | `0.6180` | ResNet + SGD + MultiStep + AMP + RandomErasing |
 
-这条实验线的重点不是“做了三个模型”，而是：
-
 - `improved` 相比 `baseline` 提升 `14.10` 个百分点。
 - `resnet` 相比 `baseline` 提升 `22.08` 个百分点。
-- 读者可以非常直观地看到结构升级和训练策略升级分别带来了什么。
+- 从结果上可以比较清楚地看出结构和训练策略的影响。
 
 ## 精选展示
 
 ![CIFAR-10 ResNet predictions](../../assets/showcase/cifar10-resnet-predictions.png)
 
-这个结果图只保留对展示最有价值的预测样例，不把完整训练输出目录直接堆进仓库正文。
+这张图保留了一次典型预测结果。
 
 ## 如何运行
 
