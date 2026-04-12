@@ -64,6 +64,7 @@ def save_loss_curve_in_subprocess(
     )
 
     try:
+        destination.parent.mkdir(parents=True, exist_ok=True)
         result = subprocess.run(
             [sys.executable, "-c", script, str(temp_path)],
             capture_output=True,
@@ -83,4 +84,3 @@ def save_loss_curve_in_subprocess(
     if stdout:
         return False, stdout
     return False, "Unknown plotting error."
-

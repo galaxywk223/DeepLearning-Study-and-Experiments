@@ -31,7 +31,13 @@ def ensure_dir(path: Path) -> Path:
     return path
 
 
+def ensure_parent_dir(path: Path) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return path
+
+
 def write_json(path: Path, payload: dict[str, object]) -> None:
+    ensure_parent_dir(path)
     path.write_text(
         json.dumps(payload, indent=2, ensure_ascii=False),
         encoding="utf-8",
@@ -39,6 +45,7 @@ def write_json(path: Path, payload: dict[str, object]) -> None:
 
 
 def write_text(path: Path, content: str) -> None:
+    ensure_parent_dir(path)
     path.write_text(content, encoding="utf-8")
 
 
@@ -46,4 +53,3 @@ def count_parameters(model: torch.nn.Module) -> int:
     return sum(
         parameter.numel() for parameter in model.parameters() if parameter.requires_grad
     )
-

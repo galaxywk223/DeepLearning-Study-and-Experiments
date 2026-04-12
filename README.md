@@ -24,7 +24,19 @@
 | MNIST | `CNN improved` 测试集准确率 `99.47%` | 从最小 MLP 到卷积网络，训练流程和可视化链路完整跑通 |
 | CIFAR-10 | `ResNet` 测试集准确率 `95.33%` | 清楚展示“基线有限，工程优化和结构升级有效” |
 | Character Transformer | `transformer v3` 验证集困惑度 `4.63` | 最小字符级 Transformer 已能学到对白格式与局部句式 |
-| Subword GPT | `subword-gpt v1` 验证集困惑度 `19.51` | 工程形态明显更接近真实 GPT 训练工作流 |
+| Subword GPT | `subword-gpt v2` 验证集困惑度 `13.19` | 在保留 GPT 工程形态的同时，把验证表现继续向前推进了一大步 |
+
+## 语言模型速览
+
+| 模型 | token 粒度 | 参数量 | 最佳验证困惑度 | 更适合展示什么 |
+| --- | --- | ---: | ---: | --- |
+| `char-transformer v3` | 字符级 | 2,286,593 | `4.63` | 最小 Transformer 主线已经真正跑通，生成观感更成熟 |
+| `subword-gpt v2` | 子词级 BPE | 9,194,976 | `13.19` | 更接近真实 GPT 的 tokenizer、padding mask 与采样控制流程 |
+
+这两个数字不能直接当作绝对优劣，因为 token 粒度不同；更合理的看法是：
+
+- `char-transformer v3` 更强在“最小语言模型效果展示”。
+- `subword-gpt v2` 更强在“工程流程更接近真实 GPT 实践”。
 
 ## 精选展示
 
@@ -35,6 +47,10 @@
 ### Character Transformer v3 收敛曲线
 
 ![Character Transformer v3 loss curve](./assets/showcase/char-transformer-v3-loss-curve.png)
+
+### Subword GPT v2 收敛曲线
+
+![Subword GPT v2 loss curve](./assets/showcase/subword-gpt-v2-loss-curve.png)
 
 ## 推荐阅读顺序
 

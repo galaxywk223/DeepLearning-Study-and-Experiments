@@ -13,6 +13,7 @@ from .models import build_model
 from .utils import (
     count_parameters,
     ensure_dir,
+    ensure_parent_dir,
     resolve_device,
     set_seed,
     write_json,
@@ -78,6 +79,7 @@ def run_experiment(config: ExperimentConfig) -> dict[str, Any]:
     print(f"Trainable parameters: {parameter_count:,}")
 
     for epoch in range(1, config.epochs + 1):
+        ensure_dir(run_dir)
         train_loss, global_step, current_lr = train_one_epoch(
             model,
             dataset.train_documents,
@@ -119,6 +121,7 @@ def run_experiment(config: ExperimentConfig) -> dict[str, Any]:
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             best_epoch = epoch
+            ensure_parent_dir(config.checkpoint_path)
             torch.save(model.state_dict(), config.checkpoint_path)
 
         print(
@@ -130,6 +133,7 @@ def run_experiment(config: ExperimentConfig) -> dict[str, Any]:
             f"lr={current_lr:.6f}"
         )
 
+    ensure_parent_dir(config.checkpoint_path)
     model.load_state_dict(torch.load(config.checkpoint_path, map_location=device))
     final_losses = estimate_loss(
         model,
