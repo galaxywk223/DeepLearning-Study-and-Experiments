@@ -1,26 +1,33 @@
 # MNIST 实验
 
-这个项目使用 PyTorch 在 MNIST 手写数字识别任务上实现了两个版本：
+这个项目是仓库里最靠前的一站：用最经典的 MNIST 任务，把“最小可运行基线”和“卷积网络带来的真实提升”放在同一条实验线上。
 
-- `MLP baseline`：单隐藏层全连接网络，作为最小可用基线
-- `CNN improved`：两层卷积网络，加入 BatchNorm、Dropout、AdamW 和学习率调度
+## 项目定位
 
-## 实验结果
+- `MLP baseline`：单隐藏层全连接网络，用来建立最小训练闭环。
+- `CNN improved`：两层卷积网络，加入 BatchNorm、Dropout、AdamW 和学习率调度。
+- 这个项目想表达的重点不是追求极限，而是把“从基线到改进”的过程做清楚。
 
-以下结果来自本地 CUDA 环境的最新一次完整运行：
+## 核心结果
 
-| 模型         | 轮数 | 批大小 | 数据增强          | 最佳测试准确率 | 最终测试损失 |
-| ------------ | ---: | -----: | ----------------- | -------------: | -----------: |
-| MLP baseline |   10 |     64 | None              |         96.12% |       0.1337 |
-| CNN improved |   15 |     64 | RandomRotation(5) |         99.47% |       0.0192 |
+| 模型 | 轮数 | 批大小 | 数据增强 | 最佳测试准确率 | 最终测试损失 |
+| --- | ---: | ---: | --- | ---: | ---: |
+| `MLP baseline` | 10 | 64 | 无 | `96.12%` | `0.1337` |
+| `CNN improved` | 15 | 64 | `RandomRotation(5)` | `99.47%` | `0.0192` |
 
-对比结论：
+可以直接把这条线理解为：
 
-- CNN 相比 MLP 提升了 `3.35` 个百分点
-- CNN 在第 `12` 个 epoch 达到最佳精度 `99.47%`
-- 这个项目清晰展示了从简单基线到改进模型的迭代过程
+- MLP 负责解释最小分类流程怎么搭起来。
+- CNN 负责解释为什么卷积结构在图像任务上明显更强。
+- 两者之间有 `3.35` 个百分点的准确率提升。
 
-## 快速运行
+## 精选展示
+
+![MNIST CNN predictions](../../assets/showcase/mnist-cnn-predictions.png)
+
+这张图来自整理后的精选展示资源，用来保留对外最有价值的结果画面，而不是把完整训练输出目录一起提交到仓库。
+
+## 如何运行
 
 ```bash
 pip install -r ../requirements.txt
@@ -35,30 +42,17 @@ python train_cnn.py --epochs 5 --batch-size 128 --experiment-name cnn-dev
 python train_mlp.py --epochs 3 --output-dir outputs/dev-runs
 ```
 
-## 输出文件
+运行后会在本项目目录下自动生成：
 
-每次运行都会写入 `outputs/<experiment-name>/`：
+- `data/`：下载的数据集
+- `outputs/<experiment-name>/`：配置、指标、最佳权重和预测可视化
 
-- `config.json`：本次实验配置
-- `metrics.json`：训练历史、最佳精度、最终精度
-- `best_model.pt`：最佳 checkpoint
-- `predictions.png`：预测结果示例图
+这些目录默认仅用于本地运行，不纳入版本控制。
 
-当前已生成的实验产物：
-
-- `outputs/mlp-baseline/`
-- `outputs/cnn-improved/`
-
-说明：
-
-- `data/` 和 `outputs/` 都是本地运行时生成目录，默认不提交到仓库
-- 共享依赖文件位于 `../requirements.txt`
-
-## 项目结构
+## 代码结构
 
 ```text
 01-mnist-cnn-experiments/
-├─ data/                 # local, gitignored
 ├─ mnist_experiments/
 │  ├─ cli.py
 │  ├─ config.py
@@ -68,46 +62,15 @@ python train_mlp.py --epochs 3 --output-dir outputs/dev-runs
 │  ├─ runner.py
 │  ├─ utils.py
 │  └─ visualize.py
-├─ outputs/              # local, gitignored
 ├─ cnn_model.py
 ├─ train_cnn.py
-├─ train_mlp.py
-└─ ../requirements.txt   # shared dependency file
+└─ train_mlp.py
 ```
 
-源码职责：
+- `train_mlp.py` 和 `train_cnn.py` 是命令行入口。
+- `mnist_experiments/` 负责数据、配置、训练、可视化和结果落盘。
 
-- `train_mlp.py` / `train_cnn.py`：命令行入口
-- `mnist_experiments/models.py`：MLP 和 CNN 模型定义
-- `mnist_experiments/data.py`：MNIST 数据集和预处理
-- `mnist_experiments/engine.py`：训练与评估循环
-- `mnist_experiments/runner.py`：实验编排、checkpoint 保存、metrics 输出
-- `mnist_experiments/visualize.py`：预测结果图保存
+## 延伸阅读
 
-## 默认配置
-
-`MLP baseline`
-
-- 优化器：`SGD`
-- 学习率：`0.01`
-- 训练轮数：`10`
-- 隐藏层维度：`128`
-
-`CNN improved`
-
-- 优化器：`AdamW`
-- 学习率：`0.001`
-- 权重衰减：`1e-4`
-- 训练轮数：`15`
-- 批大小：`64`
-- 数据增强：`RandomRotation(5)`
-- 隐藏层维度：`512`
-- Dropout：`0.5`
-- 学习率调度：`ReduceLROnPlateau`
-
-## 工程说明
-
-- 数据默认下载到 `./data`
-- 训练集可选随机旋转增强，测试集固定只做标准化，避免评估口径污染
-- 模型最佳权重和训练指标统一保存在 `outputs/` 下，便于后续补实验表和可视化
-- `cnn_model.py` 当前仅保留兼容导出，核心实现已迁移到 `mnist_experiments/`
+- 原理与实现展开见：[01-MLP与MNIST：从数据预处理到训练流程](../../notes/01-MLP与MNIST：从数据预处理到训练流程.md)
+- 卷积相关内容见：[02-CNN与MNIST：从卷积直觉到图像分类实现](../../notes/02-CNN与MNIST：从卷积直觉到图像分类实现.md)

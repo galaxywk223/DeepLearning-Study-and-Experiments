@@ -1,70 +1,36 @@
 # CIFAR-10 CNN 实验
 
-这个项目围绕 CIFAR-10 图像分类任务实现了三个版本：
+这个项目是仓库里最明显的“性能迭代线”。
 
-- `baseline`：简单 CNN 起点
-- `improved`：在 baseline 上加入工程化优化版本
-- `resnet`：第三版残差网络，继续冲更高上限
+它把 CIFAR-10 图像分类拆成三个连续版本，让读者能直接看到：简单 CNN 够不够、工程化训练策略能带来多少收益、什么时候需要切到 ResNet。
 
-## 第一版定位
+## 项目定位
 
-- 数据集：`CIFAR-10`
-- 任务：`32x32` 彩色图像 10 分类
-- 模型：两层卷积 + ReLU + MaxPool + 两层全连接
-- 训练策略：`Adam` + `CrossEntropyLoss`
-- 数据处理：只做 `ToTensor + Normalize`
-- 不包含的优化：数据增强、BN、Dropout、残差结构、AMP、标签平滑
+- `baseline`：简单 CNN，对应最清晰的对照组。
+- `improved`：保留 CNN 路线，但补齐 BatchNorm、Dropout、AdamW、CosineAnnealing、标签平滑和数据增强。
+- `resnet`：切换到更适合 CIFAR-10 的残差网络路线，继续提升上限。
 
-这一版的目标是建立清晰的起点，作为后续优化版本的对照组。
+## 核心结果
 
-## 第二版定位
+| 版本 | 轮数 | 批大小 | 最佳测试准确率 | 最终测试损失 | 说明 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `baseline` | 20 | 128 | `73.25%` | `1.1329` | 简单 CNN，无增强 |
+| `improved` | 30 | 256 | `87.35%` | `0.8294` | 更深 CNN + 增强 + AdamW + Cosine + AMP |
+| `resnet` | 100 | 128 | `95.33%` | `0.6180` | ResNet + SGD + MultiStep + AMP + RandomErasing |
 
-第二版继续保留 CNN 路线，但补上更接近实际项目的训练优化：
+这条实验线的重点不是“做了三个模型”，而是：
 
-- 更深的卷积结构
-- BatchNorm + Dropout
-- `AdamW`
-- `CosineAnnealingLR`
-- `Label Smoothing`
-- CUDA 下可选 `AMP`
-- 数据增强：`RandomCrop`、`RandomHorizontalFlip`、`ColorJitter`
+- `improved` 相比 `baseline` 提升 `14.10` 个百分点。
+- `resnet` 相比 `baseline` 提升 `22.08` 个百分点。
+- 读者可以非常直观地看到结构升级和训练策略升级分别带来了什么。
 
-目标是把 baseline 从“能跑通”推进到“有明显可展示的优化幅度”。
+## 精选展示
 
-## 第三版定位
+![CIFAR-10 ResNet predictions](../../assets/showcase/cifar10-resnet-predictions.png)
 
-第三版不再只是“把普通 CNN 继续调强”，而是切换到更适合 CIFAR-10 的残差网络路线：
+这个结果图只保留对展示最有价值的预测样例，不把完整训练输出目录直接堆进仓库正文。
 
-- `CIFAR-style ResNet`
-- `SGD + Nesterov momentum`
-- `MultiStepLR`
-- `Label Smoothing`
-- `AMP`
-- 更完整的数据增强，包括 `RandomErasing`
-
-目标是继续把准确率往 `90%+` 推进。
-
-## 当前结果
-
-以下结果来自本地 CUDA 环境的实际运行产物：
-
-| 版本     | 轮数 | 批大小 | 最佳测试准确率 | 最终测试损失 | 说明                                             |
-| -------- | ---: | -----: | -------------: | -----------: | ------------------------------------------------ |
-| baseline |   20 |    128 |         73.25% |       1.1329 | 简单 CNN，无增强                                 |
-| improved |   30 |    256 |         87.35% |       0.8294 | 更深 CNN + 增强 + AdamW + Cosine + AMP           |
-| resnet   |  100 |    128 |         95.33% |       0.6180 | 残差网络 + SGD + MultiStep + AMP + RandomErasing |
-
-对比结论：
-
-- improved 相比 baseline 提升了 `14.10` 个百分点
-- resnet 相比 baseline 提升了 `22.08` 个百分点
-- resnet 相比 improved 进一步提升了 `7.98` 个百分点
-- baseline 在约第 `4-5` 个 epoch 后接近瓶颈，并出现明显过拟合迹象
-- improved 在第 `27` 个 epoch 达到当前最佳精度 `87.35%`
-- resnet 在第 `92` 个 epoch 达到当前最佳精度 `95.33%`
-- 这个项目清晰展示了“baseline 表现有限，通过工程化优化和结构升级显著提升性能”的迭代路径，并且已经超过了 `90%+` 目标
-
-## 运行
+## 如何运行
 
 ```bash
 pip install -r ../requirements.txt
@@ -78,35 +44,20 @@ python train_resnet.py
 ```bash
 python train_baseline.py --epochs 10 --batch-size 256 --experiment-name cifar10-baseline-dev
 python train_improved.py --epochs 20 --batch-size 128 --experiment-name cifar10-improved-dev
-python train_resnet.py --batch-size 128 --num-workers 4 --use-amp
+python train_resnet.py --epochs 30 --batch-size 128 --experiment-name cifar10-resnet-dev
 ```
 
-Windows + CUDA 建议：
+运行后会在本项目目录下自动生成：
 
-- 优先从 `--num-workers 2` 或 `--num-workers 4` 开始，不建议一上来设到 `8`
-- 如果训练打印完 `Running ...` 后长时间不进入 `Epoch 01/...`，先试 `--num-workers 0`
-- `improved` 版在 CUDA 下建议加 `--use-amp`
+- `data/`：本地下载的数据集
+- `outputs/<experiment-name>/`：配置、指标、最佳权重和预测可视化
 
-## 输出文件
+这些目录默认只作为本地运行目录使用。
 
-每次运行都会写入 `outputs/<experiment-name>/`：
-
-- `config.json`：本次实验配置
-- `metrics.json`：训练历史、最佳精度、最终精度
-- `best_model.pt`：最佳 checkpoint
-- `predictions.png`：预测结果示例图
-- `metrics.json` 中也会记录实际生效的 DataLoader 配置
-
-说明：
-
-- `data/` 和 `outputs/` 都是本地运行时生成目录，默认不提交到仓库
-- 共享依赖文件位于 `../requirements.txt`
-
-## 项目结构
+## 代码结构
 
 ```text
 02-cifar10-cnn-experiments/
-├─ data/                 # local, gitignored
 ├─ cifar10_experiments/
 │  ├─ cli.py
 │  ├─ config.py
@@ -116,58 +67,15 @@ Windows + CUDA 建议：
 │  ├─ runner.py
 │  ├─ utils.py
 │  └─ visualize.py
-├─ outputs/              # local, gitignored
 ├─ train_baseline.py
 ├─ train_improved.py
-├─ train_resnet.py
-└─ ../requirements.txt   # shared dependency file
+└─ train_resnet.py
 ```
 
-## 源码职责
+- 三个 `train_*.py` 负责切换不同实验版本。
+- `cifar10_experiments/` 负责训练逻辑、配置管理和结果落盘。
 
-- `train_baseline.py`：命令行入口
-- `train_improved.py`：优化版训练入口
-- `train_resnet.py`：第三版残差网络入口
-- `cifar10_experiments/models.py`：baseline / improved / resnet 模型定义
-- `cifar10_experiments/data.py`：CIFAR-10 数据集与预处理
-- `cifar10_experiments/engine.py`：训练与评估循环
-- `cifar10_experiments/runner.py`：实验编排、checkpoint 保存、metrics 输出
-- `cifar10_experiments/visualize.py`：预测结果图保存
+## 延伸阅读
 
-## 默认配置
-
-`baseline`
-
-- 优化器：`Adam`
-- 学习率：`0.001`
-- 训练轮数：`20`
-- 批大小：`128`
-- DataLoader 进程数：`2`
-
-`improved`
-
-- 优化器：`AdamW`
-- 学习率：`0.0003`
-- 权重衰减：`5e-4`
-- 训练轮数：`30`
-- 批大小：`128`
-- DataLoader 进程数：`4`
-- 标签平滑：`0.1`
-- 学习率调度：`CosineAnnealingLR`
-- AMP：CUDA 下启用
-- 数据增强：`RandomCrop(32, padding=4)` + `RandomHorizontalFlip` + `ColorJitter`
-- Windows 下会自动将 `num_workers` 上限控制在 `4`
-
-`resnet`
-
-- 优化器：`SGD` + Nesterov momentum
-- 学习率：`0.1`
-- 权重衰减：`5e-4`
-- 训练轮数：`100`
-- 批大小：`128`
-- DataLoader 进程数：`4`
-- 标签平滑：`0.1`
-- 学习率调度：`MultiStepLR`
-- AMP：CUDA 下启用
-- 数据增强：`RandomCrop(32, padding=4)` + `RandomHorizontalFlip` + `ColorJitter` + `RandomErasing`
-- 当前结果：`95.33%`
+- 总览对比见：[实验结果总览](../../docs/实验结果总览.md)
+- 如果想从更基础的图像分类理解开始，建议先看：[MNIST 实验](../01-mnist-cnn-experiments/README.md)

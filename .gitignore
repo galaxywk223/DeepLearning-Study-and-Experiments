@@ -22,7 +22,8 @@ env/
 .DS_Store
 Thumbs.db
 
-# Training outputs and logs
+# Local generated artifacts
+# Public showcase assets should live under assets/showcase/.
 outputs/
 *.out.log
 *.err.log
@@ -32,7 +33,7 @@ projects/*/outputs/
 *.tfevents.*
 runs/
 
-# Data/artifacts
+# Local datasets and downloaded corpora
 data/
 projects/*/data/
 datasets/
