@@ -1,4 +1,22 @@
-# MLP 与 MNIST：从数据预处理到训练流程
+# MLP 与 MNIST：从数据预处理到最小分类训练
+
+## 本章目标
+
+- 用 MNIST 跑通第一条最小图像分类训练链路。
+- 看懂数据预处理、MLP、交叉熵、SGD 和训练循环如何串起来。
+- 为下一章的 CNN 升级建立清晰对照组。
+
+## 本章实验
+
+- 对应项目：[MNIST 实验速查](../projects/01-mnist-cnn-experiments/README.md)
+- 本章聚焦：`MLP baseline`
+- 你会产出：配置、指标、最佳权重和预测可视化
+
+## 关键结果
+
+| 实验 | 最佳测试准确率 | 说明 |
+| --- | ---: | --- |
+| `MLP baseline` | `96.12%` | 建立最小可运行分类基线 |
 
 > 说明：这篇笔记整理自我的个人博客原文，原始发布地址为：<https://blog.csdn.net/galaxy223/article/details/146328910?fromshare=blogdetail&sharetype=blogdetail&sharerId=146328910&sharerefer=PC&sharesource=galaxy223&sharefrom=from_link>
 
@@ -546,3 +564,23 @@ plt.show()
 - 最后通过交叉熵损失和 SGD 完成训练
 
 虽然这个模型结构很简单，但它已经包含了后续深度学习项目中的几个基本要素：数据预处理、模型定义、损失函数、优化器和训练循环。理解这条主线之后，再看 CNN、Transformer 等更复杂模型会更容易建立整体认识。
+
+## 如何运行
+
+```bash
+cd projects/01-mnist-cnn-experiments
+pip install -r ../requirements.txt
+python train_mlp.py
+```
+
+## 代码入口
+
+- `projects/01-mnist-cnn-experiments/train_mlp.py`：训练入口
+- `projects/01-mnist-cnn-experiments/mnist_experiments/data.py`：数据加载
+- `projects/01-mnist-cnn-experiments/mnist_experiments/models.py`：模型定义
+- `projects/01-mnist-cnn-experiments/mnist_experiments/runner.py`：训练主流程
+
+## 继续阅读
+
+- 下一章：[02-CNN与MNIST：从卷积直觉到图像分类升级](./02-CNN与MNIST：从卷积直觉到图像分类升级.md)
+- 项目速查：[MNIST 实验速查](../projects/01-mnist-cnn-experiments/README.md)

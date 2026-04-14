@@ -1,4 +1,25 @@
-# CNN 与 MNIST：从卷积直觉到图像分类实现
+# CNN 与 MNIST：从卷积直觉到图像分类升级
+
+## 本章目标
+
+- 建立卷积运算和图像局部结构之间的直觉联系。
+- 看懂为什么 CNN 在 MNIST 上通常比 MLP 更有效。
+- 通过改进版 CNN 把入门分类实验推进到更稳定的结果。
+
+## 本章实验
+
+- 对应项目：[MNIST 实验速查](../projects/01-mnist-cnn-experiments/README.md)
+- 本章聚焦：`CNN improved`
+- 你会对照上一章的 `MLP baseline` 一起看结构升级带来的收益
+
+## 关键结果
+
+| 模型 | 最佳测试准确率 | 说明 |
+| --- | ---: | --- |
+| `MLP baseline` | `96.12%` | 上一章的最小全连接基线 |
+| `CNN improved` | `99.47%` | 卷积结构 + BatchNorm + Dropout + AdamW + 学习率调度 |
+
+![MNIST CNN predictions](../assets/showcase/mnist-cnn-predictions.png)
 
 > 说明：这篇笔记整理自我的个人博客原文，原始发布地址为：<https://blog.csdn.net/galaxy223/article/details/146422220?fromshare=blogdetail&sharetype=blogdetail&sharerId=146422220&sharerefer=PC&sharesource=galaxy223&sharefrom=from_link>
 
@@ -360,3 +381,24 @@ $$\theta_{t+1} = \theta_t - \eta \cdot \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsi
 - 对结果求和
 
 在图像任务里，这种操作可以更自然地利用空间邻域信息。相比直接展平输入的 MLP，CNN 能更高效地提取边缘、纹理和局部结构，因此在 MNIST 这样的图像分类任务上通常表现更好。
+
+## 如何运行
+
+```bash
+cd projects/01-mnist-cnn-experiments
+pip install -r ../requirements.txt
+python train_cnn.py
+```
+
+## 代码入口
+
+- `projects/01-mnist-cnn-experiments/train_cnn.py`：训练入口
+- `projects/01-mnist-cnn-experiments/mnist_experiments/models.py`：CNN 结构定义
+- `projects/01-mnist-cnn-experiments/mnist_experiments/runner.py`：训练主流程
+- `projects/01-mnist-cnn-experiments/mnist_experiments/visualize.py`：预测可视化
+
+## 继续阅读
+
+- 上一章：[01-MLP与MNIST：从数据预处理到最小分类训练](./01-MLP与MNIST：从数据预处理到最小分类训练.md)
+- 下一章：[03-CIFAR-10与ResNet：从简单CNN到残差网络](./03-CIFAR-10与ResNet：从简单CNN到残差网络.md)
+- 项目速查：[MNIST 实验速查](../projects/01-mnist-cnn-experiments/README.md)

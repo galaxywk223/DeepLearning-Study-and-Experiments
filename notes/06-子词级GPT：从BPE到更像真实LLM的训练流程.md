@@ -1,4 +1,25 @@
-# 子词级 GPT（Subword GPT）：从 BPE 到更像真实 LLM 的训练流程
+# 子词级 GPT：从 BPE 到更像真实 LLM 的训练流程
+
+## 本章目标
+
+- 把最小字符级语言模型继续推进到更接近真实 GPT 的训练流程。
+- 看懂 tokenizer、special tokens、padding mask 和采样控制为什么会一起出现。
+- 建立“模型结构 + 数据管线 + 生成策略”是一条完整工程链路的直觉。
+
+## 本章实验
+
+- 对应项目：[子词级 GPT 实验速查](../projects/04-subword-gpt-experiments/README.md)
+- 本章聚焦：`subword-gpt v1`、`subword-gpt v2`
+- 你会产出：tokenizer 文件、指标、最佳权重、生成样例和 loss 曲线
+
+## 关键结果
+
+| 版本 | 词表大小 | 参数量 | 最佳验证困惑度 | 主要看点 |
+| --- | ---: | ---: | ---: | --- |
+| `subword-gpt v1` | 512 | 6,490,624 | `19.51` | 第一版完整子词级 GPT 基线 |
+| `subword-gpt v2` | 512 | 9,194,976 | `13.19` | 在完整工作流下继续提升验证表现 |
+
+![Subword GPT v2 loss curve](../assets/showcase/subword-gpt-v2-loss-curve.png)
 
 前一篇笔记里，Transformer 语言模型还是字符级的。
 
@@ -260,3 +281,30 @@ pad 位置不再参与损失计算。
 - 学会把模型代码和数据代码衔接成一条更像真实 GPT 的训练路径
 
 做完这一步之后，你对 GPT 的理解会更接近“它在工程上到底是怎么被训练出来的”，而不只是“我知道注意力公式长什么样”。
+
+## 如何运行
+
+```bash
+cd projects/04-subword-gpt-experiments
+pip install -r ../requirements.txt
+python train_gpt.py
+```
+
+如果要导出不同温度下的生成结果：
+
+```bash
+python generate_samples.py --run-dir outputs/<experiment-name> --temperatures 0.6 0.8 1.0 --top-k 40 --top-p 0.95
+```
+
+## 代码入口
+
+- `projects/04-subword-gpt-experiments/train_gpt.py`：训练入口
+- `projects/04-subword-gpt-experiments/generate_samples.py`：生成样例导出入口
+- `projects/04-subword-gpt-experiments/subword_gpt_experiments/tokenizer.py`：BPE tokenizer 逻辑
+- `projects/04-subword-gpt-experiments/subword_gpt_experiments/models.py`：模型定义
+- `projects/04-subword-gpt-experiments/subword_gpt_experiments/runner.py`：训练主流程
+
+## 继续阅读
+
+- 上一章：[05-Transformer语言模型：从位置编码到最小可训练实现](./05-Transformer语言模型：从位置编码到最小可训练实现.md)
+- 项目速查：[子词级 GPT 实验速查](../projects/04-subword-gpt-experiments/README.md)

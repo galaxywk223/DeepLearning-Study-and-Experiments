@@ -1,5 +1,24 @@
 # 自注意力机制：从 Q、K、V 到缩放点积注意力
 
+## 本章目标
+
+- 建立自注意力最核心的矩阵运算直觉。
+- 看懂 `Q`、`K`、`V`、缩放和 Softmax 各自解决什么问题。
+- 为下一章的 Transformer 语言模型实现打基础。
+
+## 本章实验衔接
+
+- 对应项目：[字符级 Transformer 实验速查](../projects/03-char-transformer-experiments/README.md)
+- 这一章本身不单独训练模型，重点是为字符级 Transformer 项目提供注意力直觉。
+- 阅读完本章后，继续看下一章并运行 `train_transformer.py` 会更顺。
+
+## 学完这章应掌握
+
+- `QK^T` 为什么可以表示位置之间的相关性
+- 为什么要除以 `sqrt(d_k)`
+- Softmax 如何把分数变成归一化权重
+- 为什么最终要对 `V` 做加权求和
+
 > 说明：这篇笔记整理自我的个人博客原文，原始发布地址为：<https://blog.csdn.net/galaxy223/article/details/146487673?fromshare=blogdetail&sharetype=blogdetail&sharerId=146487673&sharerefer=PC&sharesource=galaxy223&sharefrom=from_link>
 
 这篇笔记讨论一个核心问题：自注意力机制是怎样用矩阵运算表达“序列内部元素之间的关联”的。
@@ -170,3 +189,22 @@ $$
 - 最终对 `V` 的加权求和得到上下文化后的输出
 
 理解了这一条主线，再去看多头注意力、位置编码和完整 Transformer 结构，就会容易很多。
+
+## 如何运行对应实验
+
+```bash
+cd projects/03-char-transformer-experiments
+pip install -r ../requirements.txt
+python train_transformer.py
+```
+
+## 代码入口
+
+- `projects/03-char-transformer-experiments/char_transformer_experiments/models.py`：注意力与 Transformer block 实现
+- `projects/03-char-transformer-experiments/train_transformer.py`：训练入口
+
+## 继续阅读
+
+- 上一章：[03-CIFAR-10与ResNet：从简单CNN到残差网络](./03-CIFAR-10与ResNet：从简单CNN到残差网络.md)
+- 下一章：[05-Transformer语言模型：从位置编码到最小可训练实现](./05-Transformer语言模型：从位置编码到最小可训练实现.md)
+- 项目速查：[字符级 Transformer 实验速查](../projects/03-char-transformer-experiments/README.md)
