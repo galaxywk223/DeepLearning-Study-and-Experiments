@@ -1,10 +1,12 @@
 # CIFAR-10 实验速查
 
-主阅读入口：
+这个目录承接 CIFAR-10 图像分类主线，依次保留 `baseline`、`improved` 和 `resnet` 三组可对照的实验。
+
+## 关联笔记
 
 - [03-CIFAR-10与ResNet：从简单CNN到残差网络](../../notes/03-CIFAR-10与ResNet：从简单CNN到残差网络.md)
 
-## 包含实验
+## 实验内容
 
 | 实验 | 作用 | 最佳测试准确率 |
 | --- | --- | ---: |
@@ -12,7 +14,13 @@
 | `improved` | 在 CNN 路线上补齐增强和训练策略 | `87.35%` |
 | `resnet` | 切到残差网络继续拉高上限 | `95.33%` |
 
-![CIFAR-10 ResNet predictions](../../assets/showcase/cifar10-resnet-predictions.png)
+## 代表结果
+
+`ResNet` 预测可视化适合对照模型升级后在复杂小图像上的识别表现。
+
+<p align="center">
+  <img src="../../assets/showcase/cifar10-resnet-predictions.png" alt="CIFAR-10 ResNet 预测结果" width="920" />
+</p>
 
 ## 运行命令
 
@@ -35,8 +43,7 @@ python train_resnet.py --epochs 30 --batch-size 128 --experiment-name cifar10-re
 
 - `data/`：本地下载的数据集
 - `outputs/<experiment-name>/`：配置、指标、最佳权重和预测可视化
-
-这些目录默认只作为本地运行目录使用。
+- 这些目录默认只作为本地运行目录使用。
 
 ## 代码入口
 

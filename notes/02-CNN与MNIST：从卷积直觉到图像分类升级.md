@@ -8,7 +8,7 @@
 
 ## 本章实验
 
-- 对应项目：[MNIST 实验速查](../projects/01-mnist-cnn-experiments/README.md)
+- 对应项目：[MNIST 实验速查](../experiments/01-mnist-cnn-experiments/README.md)
 - 本章聚焦：`CNN improved`
 - 你会对照上一章的 `MLP baseline` 一起看结构升级带来的收益
 
@@ -19,7 +19,9 @@
 | `MLP baseline` | `96.12%` | 上一章的最小全连接基线 |
 | `CNN improved` | `99.47%` | 卷积结构 + BatchNorm + Dropout + AdamW + 学习率调度 |
 
-![MNIST CNN predictions](../assets/showcase/mnist-cnn-predictions.png)
+<p align="center">
+  <img src="../assets/showcase/mnist-cnn-predictions.png" alt="MNIST CNN 预测结果" width="920" />
+</p>
 
 > 说明：这篇笔记整理自我的个人博客原文，原始发布地址为：<https://blog.csdn.net/galaxy223/article/details/146422220?fromshare=blogdetail&sharetype=blogdetail&sharerId=146422220&sharerefer=PC&sharesource=galaxy223&sharefrom=from_link>
 
@@ -385,20 +387,20 @@ $$\theta_{t+1} = \theta_t - \eta \cdot \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsi
 ## 如何运行
 
 ```bash
-cd projects/01-mnist-cnn-experiments
+cd experiments/01-mnist-cnn-experiments
 pip install -r ../requirements.txt
 python train_cnn.py
 ```
 
 ## 代码入口
 
-- `projects/01-mnist-cnn-experiments/train_cnn.py`：训练入口
-- `projects/01-mnist-cnn-experiments/mnist_experiments/models.py`：CNN 结构定义
-- `projects/01-mnist-cnn-experiments/mnist_experiments/runner.py`：训练主流程
-- `projects/01-mnist-cnn-experiments/mnist_experiments/visualize.py`：预测可视化
+- `experiments/01-mnist-cnn-experiments/train_cnn.py`：训练入口
+- `experiments/01-mnist-cnn-experiments/mnist_experiments/models.py`：CNN 结构定义
+- `experiments/01-mnist-cnn-experiments/mnist_experiments/runner.py`：训练主流程
+- `experiments/01-mnist-cnn-experiments/mnist_experiments/visualize.py`：预测可视化
 
 ## 继续阅读
 
 - 上一章：[01-MLP与MNIST：从数据预处理到最小分类训练](./01-MLP与MNIST：从数据预处理到最小分类训练.md)
 - 下一章：[03-CIFAR-10与ResNet：从简单CNN到残差网络](./03-CIFAR-10与ResNet：从简单CNN到残差网络.md)
-- 项目速查：[MNIST 实验速查](../projects/01-mnist-cnn-experiments/README.md)
+- 项目速查：[MNIST 实验速查](../experiments/01-mnist-cnn-experiments/README.md)

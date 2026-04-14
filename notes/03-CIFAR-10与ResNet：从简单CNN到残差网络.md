@@ -8,7 +8,7 @@
 
 ## 本章实验
 
-- 对应项目：[CIFAR-10 实验速查](../projects/02-cifar10-cnn-experiments/README.md)
+- 对应项目：[CIFAR-10 实验速查](../experiments/02-cifar10-cnn-experiments/README.md)
 - 本章聚焦：`baseline`、`improved`、`resnet`
 - 你会产出：配置、指标、最佳权重和预测可视化
 
@@ -20,7 +20,9 @@
 | `improved` | `87.35%` | 更深 CNN + BatchNorm + Dropout + AdamW + Cosine + AMP |
 | `resnet` | `95.33%` | ResNet + SGD + MultiStep + AMP + RandomErasing |
 
-![CIFAR-10 ResNet predictions](../assets/showcase/cifar10-resnet-predictions.png)
+<p align="center">
+  <img src="../assets/showcase/cifar10-resnet-predictions.png" alt="CIFAR-10 ResNet 预测结果" width="920" />
+</p>
 
 ## 为什么 CIFAR-10 比 MNIST 难得多
 
@@ -80,7 +82,7 @@ $$
 ## 如何运行
 
 ```bash
-cd projects/02-cifar10-cnn-experiments
+cd experiments/02-cifar10-cnn-experiments
 pip install -r ../requirements.txt
 python train_baseline.py
 python train_improved.py
@@ -89,14 +91,14 @@ python train_resnet.py
 
 ## 代码入口
 
-- `projects/02-cifar10-cnn-experiments/train_baseline.py`：简单 CNN 训练入口
-- `projects/02-cifar10-cnn-experiments/train_improved.py`：改进版 CNN 训练入口
-- `projects/02-cifar10-cnn-experiments/train_resnet.py`：ResNet 训练入口
-- `projects/02-cifar10-cnn-experiments/cifar10_experiments/models.py`：模型定义
-- `projects/02-cifar10-cnn-experiments/cifar10_experiments/runner.py`：训练主流程
+- `experiments/02-cifar10-cnn-experiments/train_baseline.py`：简单 CNN 训练入口
+- `experiments/02-cifar10-cnn-experiments/train_improved.py`：改进版 CNN 训练入口
+- `experiments/02-cifar10-cnn-experiments/train_resnet.py`：ResNet 训练入口
+- `experiments/02-cifar10-cnn-experiments/cifar10_experiments/models.py`：模型定义
+- `experiments/02-cifar10-cnn-experiments/cifar10_experiments/runner.py`：训练主流程
 
 ## 继续阅读
 
 - 上一章：[02-CNN与MNIST：从卷积直觉到图像分类升级](./02-CNN与MNIST：从卷积直觉到图像分类升级.md)
 - 下一章：[04-自注意力机制：从Q、K、V到缩放点积注意力](./04-自注意力机制：从Q、K、V到缩放点积注意力.md)
-- 项目速查：[CIFAR-10 实验速查](../projects/02-cifar10-cnn-experiments/README.md)
+- 项目速查：[CIFAR-10 实验速查](../experiments/02-cifar10-cnn-experiments/README.md)

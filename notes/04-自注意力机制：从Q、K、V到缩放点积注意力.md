@@ -8,7 +8,7 @@
 
 ## 本章实验衔接
 
-- 对应项目：[字符级 Transformer 实验速查](../projects/03-char-transformer-experiments/README.md)
+- 对应项目：[字符级 Transformer 实验速查](../experiments/03-char-transformer-experiments/README.md)
 - 这一章本身不单独训练模型，重点是为字符级 Transformer 项目提供注意力直觉。
 - 阅读完本章后，继续看下一章并运行 `train_transformer.py` 会更顺。
 
@@ -193,18 +193,18 @@ $$
 ## 如何运行对应实验
 
 ```bash
-cd projects/03-char-transformer-experiments
+cd experiments/03-char-transformer-experiments
 pip install -r ../requirements.txt
 python train_transformer.py
 ```
 
 ## 代码入口
 
-- `projects/03-char-transformer-experiments/char_transformer_experiments/models.py`：注意力与 Transformer block 实现
-- `projects/03-char-transformer-experiments/train_transformer.py`：训练入口
+- `experiments/03-char-transformer-experiments/char_transformer_experiments/models.py`：注意力与 Transformer block 实现
+- `experiments/03-char-transformer-experiments/train_transformer.py`：训练入口
 
 ## 继续阅读
 
 - 上一章：[03-CIFAR-10与ResNet：从简单CNN到残差网络](./03-CIFAR-10与ResNet：从简单CNN到残差网络.md)
 - 下一章：[05-Transformer语言模型：从位置编码到最小可训练实现](./05-Transformer语言模型：从位置编码到最小可训练实现.md)
-- 项目速查：[字符级 Transformer 实验速查](../projects/03-char-transformer-experiments/README.md)
+- 项目速查：[字符级 Transformer 实验速查](../experiments/03-char-transformer-experiments/README.md)

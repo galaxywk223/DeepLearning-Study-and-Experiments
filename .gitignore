@@ -27,7 +27,7 @@ Thumbs.db
 outputs/
 *.out.log
 *.err.log
-projects/*/outputs/
+experiments/*/outputs/
 *.pth
 *.pt
 *.tfevents.*
@@ -35,5 +35,5 @@ runs/
 
 # Local datasets and downloaded corpora
 data/
-projects/*/data/
+experiments/*/data/
 datasets/

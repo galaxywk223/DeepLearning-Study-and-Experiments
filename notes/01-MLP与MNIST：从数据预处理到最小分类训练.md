@@ -8,7 +8,7 @@
 
 ## 本章实验
 
-- 对应项目：[MNIST 实验速查](../projects/01-mnist-cnn-experiments/README.md)
+- 对应项目：[MNIST 实验速查](../experiments/01-mnist-cnn-experiments/README.md)
 - 本章聚焦：`MLP baseline`
 - 你会产出：配置、指标、最佳权重和预测可视化
 
@@ -568,19 +568,19 @@ plt.show()
 ## 如何运行
 
 ```bash
-cd projects/01-mnist-cnn-experiments
+cd experiments/01-mnist-cnn-experiments
 pip install -r ../requirements.txt
 python train_mlp.py
 ```
 
 ## 代码入口
 
-- `projects/01-mnist-cnn-experiments/train_mlp.py`：训练入口
-- `projects/01-mnist-cnn-experiments/mnist_experiments/data.py`：数据加载
-- `projects/01-mnist-cnn-experiments/mnist_experiments/models.py`：模型定义
-- `projects/01-mnist-cnn-experiments/mnist_experiments/runner.py`：训练主流程
+- `experiments/01-mnist-cnn-experiments/train_mlp.py`：训练入口
+- `experiments/01-mnist-cnn-experiments/mnist_experiments/data.py`：数据加载
+- `experiments/01-mnist-cnn-experiments/mnist_experiments/models.py`：模型定义
+- `experiments/01-mnist-cnn-experiments/mnist_experiments/runner.py`：训练主流程
 
 ## 继续阅读
 
 - 下一章：[02-CNN与MNIST：从卷积直觉到图像分类升级](./02-CNN与MNIST：从卷积直觉到图像分类升级.md)
-- 项目速查：[MNIST 实验速查](../projects/01-mnist-cnn-experiments/README.md)
+- 项目速查：[MNIST 实验速查](../experiments/01-mnist-cnn-experiments/README.md)

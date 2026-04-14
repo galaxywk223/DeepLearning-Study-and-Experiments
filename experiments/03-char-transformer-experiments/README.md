@@ -1,11 +1,13 @@
 # 字符级 Transformer 实验速查
 
-主阅读入口：
+这个目录承接字符级语言模型主线，从 `bigram` 基线开始，逐步补齐最小 decoder-only Transformer 的训练与采样流程。
+
+## 关联笔记
 
 - [04-自注意力机制：从Q、K、V到缩放点积注意力](../../notes/04-自注意力机制：从Q、K、V到缩放点积注意力.md)
 - [05-Transformer语言模型：从位置编码到最小可训练实现](../../notes/05-Transformer语言模型：从位置编码到最小可训练实现.md)
 
-## 包含实验
+## 实验内容
 
 | 实验 | 作用 | 最佳验证困惑度 |
 | --- | --- | ---: |
@@ -14,7 +16,13 @@
 | `transformer v2` | 扩大上下文和模型容量 | `5.33` |
 | `transformer v3` | 当前仓库里更成熟的字符级生成结果 | `4.63` |
 
-![Character Transformer v3 loss curve](../../assets/showcase/char-transformer-v3-loss-curve.png)
+## 代表结果
+
+收敛曲线适合用来观察模型容量和上下文长度扩大后，验证困惑度如何继续下降。
+
+<p align="center">
+  <img src="../../assets/showcase/char-transformer-v3-loss-curve.png" alt="Character Transformer v3 收敛曲线" width="760" />
+</p>
 
 ## 运行命令
 
@@ -34,8 +42,7 @@ python generate_samples.py --run-dir outputs/<experiment-name> --temperatures 0.
 
 - `data/`：语料文件
 - `outputs/<experiment-name>/`：配置、指标、最佳权重、生成样例和 loss 曲线
-
-这些目录默认只用于本地运行，不纳入版本控制。
+- 这些目录默认只用于本地运行，不纳入版本控制。
 
 ## 代码入口
 

@@ -8,7 +8,7 @@
 
 ## 本章实验
 
-- 对应项目：[子词级 GPT 实验速查](../projects/04-subword-gpt-experiments/README.md)
+- 对应项目：[子词级 GPT 实验速查](../experiments/04-subword-gpt-experiments/README.md)
 - 本章聚焦：`subword-gpt v1`、`subword-gpt v2`
 - 你会产出：tokenizer 文件、指标、最佳权重、生成样例和 loss 曲线
 
@@ -19,7 +19,9 @@
 | `subword-gpt v1` | 512 | 6,490,624 | `19.51` | 第一版完整子词级 GPT 基线 |
 | `subword-gpt v2` | 512 | 9,194,976 | `13.19` | 在完整工作流下继续提升验证表现 |
 
-![Subword GPT v2 loss curve](../assets/showcase/subword-gpt-v2-loss-curve.png)
+<p align="center">
+  <img src="../assets/showcase/subword-gpt-v2-loss-curve.png" alt="Subword GPT v2 收敛曲线" width="760" />
+</p>
 
 前一篇笔记里，Transformer 语言模型还是字符级的。
 
@@ -285,7 +287,7 @@ pad 位置不再参与损失计算。
 ## 如何运行
 
 ```bash
-cd projects/04-subword-gpt-experiments
+cd experiments/04-subword-gpt-experiments
 pip install -r ../requirements.txt
 python train_gpt.py
 ```
@@ -298,13 +300,13 @@ python generate_samples.py --run-dir outputs/<experiment-name> --temperatures 0.
 
 ## 代码入口
 
-- `projects/04-subword-gpt-experiments/train_gpt.py`：训练入口
-- `projects/04-subword-gpt-experiments/generate_samples.py`：生成样例导出入口
-- `projects/04-subword-gpt-experiments/subword_gpt_experiments/tokenizer.py`：BPE tokenizer 逻辑
-- `projects/04-subword-gpt-experiments/subword_gpt_experiments/models.py`：模型定义
-- `projects/04-subword-gpt-experiments/subword_gpt_experiments/runner.py`：训练主流程
+- `experiments/04-subword-gpt-experiments/train_gpt.py`：训练入口
+- `experiments/04-subword-gpt-experiments/generate_samples.py`：生成样例导出入口
+- `experiments/04-subword-gpt-experiments/subword_gpt_experiments/tokenizer.py`：BPE tokenizer 逻辑
+- `experiments/04-subword-gpt-experiments/subword_gpt_experiments/models.py`：模型定义
+- `experiments/04-subword-gpt-experiments/subword_gpt_experiments/runner.py`：训练主流程
 
 ## 继续阅读
 
 - 上一章：[05-Transformer语言模型：从位置编码到最小可训练实现](./05-Transformer语言模型：从位置编码到最小可训练实现.md)
-- 项目速查：[子词级 GPT 实验速查](../projects/04-subword-gpt-experiments/README.md)
+- 项目速查：[子词级 GPT 实验速查](../experiments/04-subword-gpt-experiments/README.md)
