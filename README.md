@@ -1,16 +1,16 @@
-# 深度学习学习笔记与实验
+# 深度学习学习与实验
 
-这个仓库现在按“章节主笔记 + 项目速查页”组织。主阅读路径集中在 [`notes/`](./notes/README.md)，实验运行方式和代码入口集中在 `projects/*/README.md`，尽量减少在不同目录之间来回跳转。
+这个仓库整理了我在深度学习方向上的学习笔记和配套实验，当前内容覆盖图像分类与语言模型两条主线。笔记以中文为主，实验代码基于 PyTorch，内容会继续补充。
 
-## 从哪里开始
+## 内容概览
 
-- 想按学习路径往下读：从 [章节索引](./notes/README.md) 开始。
-- 想快速看实验入口：直接进入各项目速查页。
-- 想先看结果：先看下面这张总表，再进入对应章节。
+- 章节索引见：[notes/README.md](./notes/README.md)
+- 项目运行入口见：`projects/*/README.md`
+- 各主线的代表结果见下表，详细说明分别放在对应章节和项目页中
 
 ## 学习主线
 
-| 章节 | 主题 | 你会学到什么 | 对应项目速查 |
+| 章节 | 主题 | 主要内容 | 对应项目速查 |
 | --- | --- | --- | --- |
 | [01](./notes/01-MLP与MNIST：从数据预处理到最小分类训练.md) | MLP 与 MNIST | 从数据预处理到最小分类训练链路 | [MNIST 实验速查](./projects/01-mnist-cnn-experiments/README.md) |
 | [02](./notes/02-CNN与MNIST：从卷积直觉到图像分类升级.md) | CNN 与 MNIST | 从全连接升级到卷积网络 | [MNIST 实验速查](./projects/01-mnist-cnn-experiments/README.md) |
@@ -28,7 +28,7 @@
 | Character Transformer | `transformer v3` 验证集困惑度 `4.63` | 最小字符级 Transformer 的实现与生成表现 |
 | Subword GPT | `subword-gpt v2` 验证集困惑度 `13.19` | 更接近真实 GPT 的 tokenizer 和训练流程 |
 
-语言模型两条结果不能直接横向比较，因为 token 粒度不同。更合适的看法是：
+语言模型两条结果不能直接横向比较，因为 token 粒度不同。更适合分别理解为：
 
 - `char-transformer v3` 更适合看最小语言模型骨架。
 - `subword-gpt v2` 更适合看更完整的 GPT 工作流。
@@ -49,7 +49,7 @@
 
 ## 快速开始
 
-共享依赖位于 `projects/requirements.txt`。下面两条命令分别对应图像分类线和语言模型线的常用入口。
+共享依赖位于 `projects/requirements.txt`。常用运行入口如下：
 
 ```bash
 cd projects/01-mnist-cnn-experiments
