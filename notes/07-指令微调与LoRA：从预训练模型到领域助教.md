@@ -76,7 +76,7 @@ $$
 那么训练目标仍然可以写成：
 
 $$
-\mathcal{L} = -\sum_{t=1}^{T}\log P(z_t \mid z_{<t})
+\mathcal{L} = -\sum_{t=1}^{T}\log P(z_t \mid z_{1:t-1})
 $$
 
 也就是说，`SFT` 并没有把语言模型训练改成完全不同的形式，它本质上仍然在优化 next-token 概率。
