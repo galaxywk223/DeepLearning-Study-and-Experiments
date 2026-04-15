@@ -10,16 +10,16 @@
 
 - 对应项目：[字符级 Transformer 实验速查](../experiments/03-char-transformer-experiments/README.md)
 - 这一章本身不单独训练模型，重点是为字符级 Transformer 项目提供注意力直觉。
-- 阅读完本章后，继续看下一章并运行 `train_transformer.py` 会更顺。
+- 后续衔接章节为下一章，对应训练入口为 `train_transformer.py`。
 
-## 学完这章应掌握
+## 本章核心要点
 
 - `QK^T` 为什么可以表示位置之间的相关性
 - 为什么要除以 `sqrt(d_k)`
 - Softmax 如何把分数变成归一化权重
 - 为什么最终要对 `V` 做加权求和
 
-> 说明：这篇笔记整理自我的个人博客原文，原始发布地址为：<https://blog.csdn.net/galaxy223/article/details/146487673?fromshare=blogdetail&sharetype=blogdetail&sharerId=146487673&sharerefer=PC&sharesource=galaxy223&sharefrom=from_link>
+> 说明：本文整理自个人博客原文，原始发布地址为：<https://blog.csdn.net/galaxy223/article/details/146487673?fromshare=blogdetail&sharetype=blogdetail&sharerId=146487673&sharerefer=PC&sharesource=galaxy223&sharefrom=from_link>
 
 这篇笔记讨论一个核心问题：自注意力机制是怎样用矩阵运算表达“序列内部元素之间的关联”的。
 
@@ -29,7 +29,7 @@
 - `QK^T` 为什么可以衡量关联程度
 - 为什么还需要缩放、Softmax 和对 `V` 的加权求和
 
-如果只想快速把握主线，可以先记住一句话：`QK^T` 负责算“谁该关注谁”，`V` 负责提供真正被聚合的内容。
+主线可概括为一句话：`QK^T` 负责算“谁该关注谁”，`V` 负责提供真正被聚合的内容。
 
 ## 从输入序列开始
 
@@ -132,11 +132,11 @@ $$
 - 这一行中的所有权重和为 `1`
 - 权重越大，表示该查询位置越关注对应目标位置
 
-到这一步，我们得到了“关注谁、关注多少”的信息，但还没有真正聚合内容。
+到这一步，已经得到了“关注谁、关注多少”的信息，但还没有真正聚合内容。
 
 ## 为什么还要乘以 `V`
 
-前面的注意力权重只告诉我们关联强弱，还没有给出最终输出表示。真正被加权求和的是 `V`：
+前面的注意力权重只表示关联强弱，还没有给出最终输出表示。真正被加权求和的是 `V`：
 
 $$
 \text{Attention}(Q,K,V)=\text{Softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V

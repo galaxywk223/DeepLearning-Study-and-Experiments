@@ -1,6 +1,6 @@
 # 实验索引
 
-`experiments/` 负责保存可运行实验和最小运行说明，建议先从 [notes/README.md](../notes/README.md) 建立概念，再回到这里选具体实验运行。
+`experiments/` 负责保存可运行实验和最小运行说明。概念主线见 [notes/README.md](../notes/README.md)，实验入口如下。
 
 ## 当前实验
 

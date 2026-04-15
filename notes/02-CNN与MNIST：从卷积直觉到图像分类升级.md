@@ -10,7 +10,7 @@
 
 - 对应项目：[MNIST 实验速查](../experiments/01-mnist-cnn-experiments/README.md)
 - 本章聚焦：`CNN improved`
-- 你会对照上一章的 `MLP baseline` 一起看结构升级带来的收益
+- 本章对照：上一章的 `MLP baseline` 与本章结构升级带来的收益
 
 ## 关键结果
 
@@ -23,14 +23,14 @@
   <img src="../assets/showcase/mnist-cnn-predictions.png" alt="MNIST CNN 预测结果" width="920" />
 </p>
 
-> 说明：这篇笔记整理自我的个人博客原文，原始发布地址为：<https://blog.csdn.net/galaxy223/article/details/146422220?fromshare=blogdetail&sharetype=blogdetail&sharerId=146422220&sharerefer=PC&sharesource=galaxy223&sharefrom=from_link>
+> 说明：本文整理自个人博客原文，原始发布地址为：<https://blog.csdn.net/galaxy223/article/details/146422220?fromshare=blogdetail&sharetype=blogdetail&sharerId=146422220&sharerefer=PC&sharesource=galaxy223&sharefrom=from_link>
 
 这篇笔记延续上一份 MLP 笔记的思路，把重点放在卷积神经网络（CNN）为什么更适合图像任务。核心问题有两个：
 
 - 卷积运算到底在做什么
 - CNN 为什么比全连接网络更容易捕捉局部空间特征
 
-文章会先从直观例子解释卷积，再过渡到二维图像处理，最后落到 MNIST 分类模型的实现与训练。
+内容结构依次为卷积直观例子、二维图像处理，以及 MNIST 分类模型的实现与训练。
 
 ## 卷积是什么
 
@@ -38,7 +38,7 @@
 
 ### 从投骰子到卷积
 
-可以先从一个概率问题建立卷积的直觉。假设投掷两个骰子，我们想求“点数和”的分布。最直接的方法当然是枚举所有组合，例如和为 `4` 的情况有 `(1,3)`、`(2,2)`、`(3,1)` 三种。
+卷积直觉可以先通过一个概率问题建立。假设投掷两个骰子，目标是求“点数和”的分布。最直接的方法当然是枚举所有组合，例如和为 `4` 的情况有 `(1,3)`、`(2,2)`、`(3,1)` 三种。
 
 当骰子面数变多、或者每个点数出现的概率不再均匀时，手工枚举会迅速变得繁琐。这时更适合把问题写成一个表格：
 
@@ -159,7 +159,7 @@ $$(y)[n]=(x*h)[n]=\sum_{k=-\infty}^{+\infty}x[k]\cdot h[n-k]$$
 >
 > 0.000 0.000 0.000 0.333 0.333 0.333 0.000 0.000
 
-我们把它可视化出来：
+对应可视化如下：
 > <img src="../assets/images/02-cnn-mnist/2be481368aa2487b92ef58d23fbfcff6.png" alt="卷积后特征图可视化" width="62%">
 
 
@@ -169,13 +169,13 @@ $$(y)[n]=(x*h)[n]=\sum_{k=-\infty}^{+\infty}x[k]\cdot h[n-k]$$
 
 在 CNN 中，一个卷积层通常会并行使用多个卷积核。每个卷积核都可以看成一个不同的局部特征检测器，多层叠加后，模型就能逐步从边缘走向更复杂的形状表示。
 
-需要再强调一次：严格的二维卷积在数学定义里包含卷积核翻转，而深度学习框架中的 `Conv2d` 更接近互相关操作。两者在线性结构上非常相近，不影响我们理解 CNN 的核心机制。
+需要再强调一次：严格的二维卷积在数学定义里包含卷积核翻转，而深度学习框架中的 `Conv2d` 更接近互相关操作。两者在线性结构上非常相近，不影响对 CNN 核心机制的理解。
 
 $$y[p,q]=\sum_m\sum_nx[m,n]\cdot h[p-m,q-n]$$
 
 其中，$h[p-m,q-n]$表示翻转后的卷积核。
 
-但实际应用中，我们使用如下公式：
+但实际应用中常用如下公式：
 $$y[p,q]=\sum_m\sum_nx[m,n]\cdot h[m+p,n+q]$$
 或等价地(以更接近卷积的形式表示):
 $$y[p,q]=\sum_m\sum_nx[m,n]\cdot h[m-p,n-q]$$

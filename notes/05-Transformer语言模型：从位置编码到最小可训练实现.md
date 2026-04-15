@@ -10,7 +10,7 @@
 
 - 对应项目：[字符级 Transformer 实验速查](../experiments/03-char-transformer-experiments/README.md)
 - 本章聚焦：`bigram`、`transformer`、`transformer v2`、`transformer v3`
-- 你会产出：指标、最佳权重、采样文本和 loss 曲线
+- 实验产物：指标、最佳权重、采样文本和 loss 曲线
 
 ## 关键结果
 
@@ -317,7 +317,7 @@ $$
 - residual + LayerNorm
 - 自回归训练与文本生成
 
-如果把这些部分真正实现一遍，你对 Transformer 的理解会从“知道公式”进入“知道它为什么能跑起来，以及训练代码里每一层到底在干什么”。
+把这些部分真正实现一遍后，对 Transformer 的理解会从“知道公式”进入“知道它为什么能跑起来，以及训练代码里每一层到底在干什么”。
 
 ## 代码入口
 

@@ -10,7 +10,7 @@
 
 - 对应项目：[CIFAR-10 实验速查](../experiments/02-cifar10-cnn-experiments/README.md)
 - 本章聚焦：`baseline`、`improved`、`resnet`
-- 你会产出：配置、指标、最佳权重和预测可视化
+- 实验产物：配置、指标、最佳权重和预测可视化
 
 ## 关键结果
 
