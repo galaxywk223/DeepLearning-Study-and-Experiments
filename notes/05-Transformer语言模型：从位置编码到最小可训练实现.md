@@ -29,7 +29,7 @@
 
 一个最小可训练的 Transformer 语言模型，到底还需要补上哪些模块？
 
-如果把目标压缩成一句话，就是：
+目标可压缩为一句话：
 
 - 输入离散词元（token），需要先变成可学习向量
 - 序列有先后顺序，需要注入位置信息
@@ -48,7 +48,7 @@ $$
 P(x_1,x_2,\dots,x_T)=\prod_{t=1}^{T}P(x_t\mid x_{1:t-1})
 $$
 
-如果把它放到字符级任务里理解，就是：
+放到字符级任务里时，含义如下：
 
 - 已知前面的字符
 - 预测下一个最可能出现的字符
@@ -82,7 +82,7 @@ $$
 (batch_size, sequence_length, embedding_dim)
 ```
 
-这里可以把嵌入（embedding）理解为离散符号的可学习查表，也是后续注意力和前馈网络真正操作的对象。
+嵌入（embedding）本质上是离散符号的可学习查表，也是后续注意力和前馈网络真正操作的对象。
 
 ## 位置编码（Positional Encoding）：告诉模型顺序
 
@@ -208,7 +208,7 @@ x = x + FFN(LN(x))
 
 ## 一个最小解码器式 Transformer（Decoder-Only Transformer）长什么样
 
-如果把字符级语言模型的最小结构压缩一下，可以写成：
+字符级语言模型的最小结构可压缩为：
 
 ```text
 token ids
@@ -342,7 +342,7 @@ python train_bigram.py
 python train_transformer.py
 ```
 
-如果要导出不同温度下的生成样例：
+不同温度生成样例的导出命令如下：
 
 ```bash
 python generate_samples.py --run-dir outputs/<experiment-name> --temperatures 0.6 0.75 0.9

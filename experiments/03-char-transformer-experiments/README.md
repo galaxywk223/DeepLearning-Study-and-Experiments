@@ -18,7 +18,7 @@
 
 ## 代表结果
 
-收敛曲线适合用来观察模型容量和上下文长度扩大后，验证困惑度如何继续下降。
+收敛曲线用于观察模型容量和上下文长度扩大后，验证困惑度如何继续下降。
 
 <p align="center">
   <img src="../../assets/showcase/char-transformer-v3-loss-curve.png" alt="Character Transformer v3 收敛曲线" width="760" />

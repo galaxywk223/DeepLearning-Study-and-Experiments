@@ -26,7 +26,7 @@
 
 ## 模板组消融
 
-在固定基座模型、LoRA 配置和同一套 `30` 道 held-out 测试题的前提下，只改变训练/验证集中保留的问题模板，可以更直接地看到训练问题分布如何改变模型能力边界。
+在固定基座模型、LoRA 配置和同一套 `30` 道 held-out 测试题的前提下，只改变训练/验证集中保留的问题模板，训练问题分布对模型能力边界的影响会更直接地显现出来。
 
 | 模板组 | 保留的训练模板 | 训练 / 验证 / 测试样本 | 平均字符级 F1 | tuned better rate | 结果解读 |
 | --- | --- | --- | ---: | ---: | --- |
@@ -100,7 +100,7 @@ python train_sft.py ^
   --lora-alpha 32
 ```
 
-未准备 `bitsandbytes` / `4-bit` 量化环境时，可先切到普通 LoRA 验证链路：
+未准备 `bitsandbytes` / `4-bit` 量化环境时，普通 LoRA 验证链路如下：
 
 ```bash
 python train_sft.py --quantization-mode none --smoke

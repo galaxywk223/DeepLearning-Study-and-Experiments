@@ -1,6 +1,6 @@
 # MNIST 实验速查
 
-这个目录承接 MNIST 主线，从最小 `MLP baseline` 到改进版 `CNN improved`，适合用来跑通第一条完整图像分类训练链路。
+该目录承接 MNIST 主线，覆盖从最小 `MLP baseline` 到改进版 `CNN improved` 的完整图像分类训练链路。
 
 ## 关联笔记
 
@@ -16,7 +16,7 @@
 
 ## 代表结果
 
-预测可视化适合用来快速确认改进版 CNN 是否已经稳定学到数字形状特征。
+预测可视化用于快速确认改进版 CNN 是否已经稳定学到数字形状特征。
 
 <p align="center">
   <img src="../../assets/showcase/mnist-cnn-predictions.png" alt="MNIST CNN 预测结果" width="920" />

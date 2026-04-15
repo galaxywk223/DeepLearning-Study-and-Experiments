@@ -4,7 +4,7 @@
 
 ## 仓库导航
 
-- [notes/README.md](notes/README.md)：章节顺序、阅读建议和主线概览。
+- [notes/README.md](notes/README.md)：章节顺序、主线概览和索引入口。
 - [experiments/README.md](experiments/README.md)：实验索引、运行入口和目录速查。
 - [assets/showcase/](assets/showcase/)：根 README 和正文中直接引用的代表结果图。
 
@@ -12,7 +12,7 @@
 
 | 章节 | 主题 | 主要内容 | 实验入口 |
 | --- | --- | --- | --- |
-| [01](./notes/01-MLP与MNIST：从数据预处理到最小分类训练.md) | MLP 与 MNIST | 从数据预处理到最小分类训练链路，先跑通第一条图像分类基线 | [MNIST 实验速查](./experiments/01-mnist-cnn-experiments/README.md) |
+| [01](./notes/01-MLP与MNIST：从数据预处理到最小分类训练.md) | MLP 与 MNIST | 从数据预处理到最小分类训练链路，建立第一条图像分类基线 | [MNIST 实验速查](./experiments/01-mnist-cnn-experiments/README.md) |
 | [02](./notes/02-CNN与MNIST：从卷积直觉到图像分类升级.md) | CNN 与 MNIST | 从全连接升级到卷积网络，理解局部感受野和参数共享 | [MNIST 实验速查](./experiments/01-mnist-cnn-experiments/README.md) |
 | [03](./notes/03-CIFAR-10与ResNet：从简单CNN到残差网络.md) | CIFAR-10 与 ResNet | 从简单 CNN 走向更真实的图像分类工程化 | [CIFAR-10 实验速查](./experiments/02-cifar10-cnn-experiments/README.md) |
 | [04](./notes/04-自注意力机制：从Q、K、V到缩放点积注意力.md) | 自注意力机制 | 建立 `Q / K / V` 和缩放点积注意力直觉 | [字符级 Transformer 实验速查](./experiments/03-char-transformer-experiments/README.md) |
@@ -30,7 +30,7 @@
 | Subword GPT | `subword-gpt v2` 验证集困惑度 `13.19` | 更接近真实 GPT 的 tokenizer 和训练流程 |
 | Notes Assistant SFT | 平均字符级 F1 `0.285 -> 0.444` | 基于 `Qwen2.5-0.5B-Instruct + LoRA` 的领域助教在 `30` 道 held-out 题上有 `93.33%` 样本优于基座 |
 
-语言模型两条结果不能直接横向比较，因为 token 粒度不同，更适合作为两条独立的学习线理解。
+语言模型两条结果不能直接横向比较。token 粒度不同，比较应分别放在各自主线内部进行。
 
 第 `07` 章对应的是基于预训练模型的轻量微调主线，重点放在指令数据、adapter 训练和评测流程。
 
@@ -46,7 +46,7 @@
 
 ### Character Transformer v3
 
-字符级语言模型的收敛曲线适合用来观察最小 Transformer 骨架何时开始稳定工作。
+字符级语言模型的收敛曲线用于观察最小 Transformer 骨架何时开始稳定工作。
 
 <p align="center">
   <img src="./assets/showcase/char-transformer-v3-loss-curve.png" alt="Character Transformer v3 收敛曲线" width="760" />
@@ -62,7 +62,7 @@
 
 ### Notes Assistant SFT
 
-第 `07` 章笔记中保留了基座模型与微调后模型的代表问答对照，这里只展示对应的缩略图。完整说明见 [07-指令微调与LoRA：从预训练模型到领域助教](./notes/07-指令微调与LoRA：从预训练模型到领域助教.md)。
+第 `07` 章笔记中保留了基座模型与微调后模型的代表问答对照。下图仅展示对应的缩略图，完整说明见 [07-指令微调与LoRA：从预训练模型到领域助教](./notes/07-指令微调与LoRA：从预训练模型到领域助教.md)。
 
 <p align="center">
   <img src="./assets/showcase/notes-assistant-qwen25-0p5b-public-results.png" alt="Notes Assistant 公开代表结果" width="920" />
