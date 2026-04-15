@@ -9,7 +9,7 @@
 ## 本章实验
 
 - 对应项目：[Notes Assistant SFT 实验速查](../experiments/05-notes-assistant-sft-experiments/README.md)
-- 本章聚焦：`notes-assistant-qwen25-0p5b`、`notes-assistant-qwen25-0p5b-smoke`
+- 本章聚焦：标准 `SFT + LoRA/QLoRA` 训练线，以及按训练问题类型拆分的模板组消融
 - 实验产物：JSONL 数据、adapter 权重、训练指标、评测报告和本地 demo
 
 ## 关键结果
@@ -39,7 +39,7 @@
 - 用显存和参数开销更可控的方式完成微调
 - 最后把结果落到评测和演示环节
 
-因此，在子词级 GPT 之后，最自然的延伸方向通常不是继续横向增加一个新的 toy 模型，而是补上基于预训练模型的轻量微调工作流。
+因此，这一章补上的不是新的 toy 模型，而是基于预训练模型的轻量微调工作流。
 
 ## 从预训练模型走向指令微调
 
@@ -141,12 +141,12 @@ $$
 
 这样一来，显存压力会继续下降。
 
-如果把两者的分工压缩成一句话：
+两者关注的重点可以区分为：
 
 - `LoRA` 关注“哪些参数需要训练”
 - `QLoRA` 关注“底座模型如何以更低成本被加载进训练流程”
 
-这也是本地单卡实验里常见的组合方式。
+在本地单卡环境里，这也是常见的组合方式。
 
 ## chat template 为什么不能忽略
 
@@ -261,9 +261,35 @@ base model
 - 变化来自 adapter 还是本来就存在于底座模型
 - 哪些收益来自风格约束，哪些收益来自知识覆盖
 
+## 模板组消融：训练问题的分布会改变能力边界
+
+这一轮消融固定：
+
+- 基座模型
+- LoRA 配置
+- 评测链路
+- 同一套 held-out 测试题
+
+只改变训练/验证集中保留的问题模板。这样得到的差异，更容易归因到训练问题分布本身，而不是归因到模型配置或评测设置的改变。
+
+这一轮对应的 4 组配置如下：
+
+| 模板组 | 保留的训练模板 | 训练 / 验证 / 测试样本 | 平均字符级 F1 | tuned better rate |
+| --- | --- | --- | ---: | ---: |
+| `full` | `explain_core + key_points + study_focus + chapter_position + experiment_bridge` | `240 / 30 / 30` | `0.444` | `93.33%` |
+| `structure` | `explain_core + chapter_position + experiment_bridge` | `144 / 18 / 30` | `0.382` | `70.00%` |
+| `content` | `explain_core + key_points + study_focus` | `144 / 18 / 30` | `0.301` | `53.33%` |
+| `core_only` | `explain_core` | `48 / 6 / 30` | `0.305` | `56.67%` |
+
+完整模板混合仍然给出了最稳的整体结果。`full` 组在平均字符级 F1 和 `tuned better rate` 上都最高，说明解释、复习、章节定位和代码桥接这几类任务同时存在时，训练分布更容易得到均衡能力。
+
+结构型模板更明显地强化了 `chapter_position` 和 `experiment_bridge` 两类能力。`structure` 组在 `chapter_position` 上达到 `0.494`，在 `experiment_bridge` 上达到 `0.652`，其中后者高于 `full` 组的 `0.568`。训练样本一旦集中在章节顺序和代码入口附近，回答结构也会更快向这两类任务收缩。
+
+内容型模板和单模板训练的能力覆盖更窄。`content` 组在 `study_focus` 和 `key_points` 上仍有提升，但 `experiment_bridge` 下降到 `0.231`；`core_only` 对 `study_focus` 和 `key_points` 也存在一定迁移，但 `chapter_position` 和 `experiment_bridge` 都低于基座。训练问题分布一旦收缩，模型能力也会随之偏向局部题型。
+
 ## 代表样例
 
-如果把自动指标继续拆开看，可以看到不同题型上的变化并不一致。下面选取 4 组代表性对照，分别对应代码入口定位、章节位置判断、概念解释和要点总结这四类问题。前 3 组更容易看出微调后回答开始贴近仓库结构和课程笔记的组织方式，最后 1 组则保留了当前版本仍然明显存在的边界。
+自动指标继续按题型拆开后，不同能力的变化并不一致。下面保留 4 组代表性对照，分别对应代码入口定位、章节位置判断、概念解释和要点总结。前 3 组能看到回答逐步贴近仓库结构与课程笔记的组织方式，最后 1 组则保留了当前版本的明显边界。
 
 ### 1. 代码入口定位
 
@@ -278,7 +304,7 @@ base model
 **参考要点**
 
 ```text
-这一题的关键，不是泛泛解释二维卷积，而是把概念落到仓库里的真实入口。更合理的回答应该先返回 experiments/01-mnist-cnn-experiments 下的训练入口，再指出对应的模型实现位置，并说明这一节真正关联的是“局部窗口 + 参数共享”如何落进卷积层。
+回答应返回 `experiments/01-mnist-cnn-experiments` 下的训练入口与模型实现位置，并把“局部窗口 + 参数共享”与卷积层实现对应起来。
 ```
 
 **基座模型回答**
@@ -320,7 +346,7 @@ base model
 如果要把这一节落到代码，建议先看 experiments/01-mnist-cnn-experiments 下的 train_cnn.py 跑通入口，再结合 experiments/01-mnist-cnn-experiments/mnist_experiments/models.py 理解这一节真正影响的是哪一段实现。对应到当前小节，最值得带着代码去验证的是：假设有一张 28x28 的灰度图像，可以把它想象成一个二维网格。接下来，我们希望用一个卷积核（kernel）把它分割成多个局部窗口。 对于每个窗口，都需要计算其特征空间直觉： 这里使用的是一个 3*3 的卷积核，它会保留图像中靠近边缘的局部模式。 把它放回《二维卷积——图像处理》这章里看，这一步相当于把“提取局部模式”从概念直觉推进到更具体的实现或训练问题。
 ```
 
-这一组样例最直接地体现了领域约束的作用。基座模型停留在通用化的检索建议上；微调后回答已经能返回仓库内的真实入口，并开始沿用课程笔记里“从概念到代码”的展开方式。
+基座模型没有返回仓库内的真实入口，回答停留在通用检索建议。微调后回答已经能定位到仓库文件，并开始沿用课程笔记里“从概念到代码”的展开方式。
 
 ### 2. 章节位置判断
 
@@ -335,7 +361,7 @@ base model
 **参考要点**
 
 ```text
-这一题考查的不是术语解释，而是章节内部的位置关系。更合理的回答应该先指出这一节承接的是“关键结果”后的整体引入，再说明它为后面的数据预处理和训练实现建立直觉上的过渡。
+回答应说明这一节位于“关键结果”后的整体引入部分，并交代它如何为后续数据预处理和训练实现建立过渡。
 ```
 
 **基座模型回答**
@@ -363,7 +389,7 @@ base model
 它承接了前面的“MNIST 的特征和分类问题”，也为后面的“为什么 MLP 会这么写”做准备。具体来说，这一节主要强调：假设有一组数据： X1, X2, X3, …, Xn，其中每个点都表示一张图片。如果想把它建成一个模型，第一步应该把数据拆成样本： x1 = (x1_1,x1_2), x2 = (x2_1,x2_2), x3 = (x3_1,x3_2), … 这样做的好处是： 每个样本都有一个标签，可以方便地进行训练和评估。 模型结构更直观，训练过程也更容易理解。 如果把这组数据放回原形，最直观的直觉就是：先按类别分组，再逐个训练分类器。 所以它不是孤立知识点，而是本章学习顺序里的一个过渡节点。
 ```
 
-这一题能看出回答结构已经开始接近课程笔记的写法。微调后模型学会了“承接前文 / 为后文做准备”这类章节组织句式，但具体承接关系和举例内容仍然会发生漂移。
+这一组回答已经开始接近课程笔记里的章节组织方式。微调后模型开始出现“承接前文 / 为后文做准备”的结构，但具体承接关系和举例内容仍然会发生漂移。
 
 ### 3. 概念解释
 
@@ -378,7 +404,7 @@ base model
 **参考要点**
 
 ```text
-这一题真正需要回答的是“这段类比在本章里解决什么问题”。参考答案通常会围绕两点展开：一是说明为什么要用熟悉经验帮助初学者建立训练流程直觉，二是交代这段内容在整章里承担的是从概念引入走向具体实现的过渡作用。
+回答应说明熟悉类比用于建立训练流程直觉，并指出这一节承担的是从概念引入走向具体实现的过渡作用。
 ```
 
 **基座模型回答**
@@ -397,7 +423,7 @@ base model
 “用一个熟悉的类比理解机器学习流程”这一节主要在讲：如果把模型比作一台车，那么训练过程可以看成驾驶台上的操作。具体来说，每次迭代时，都会从当前最优解开始，通过修正量更新参数，然后根据损失函数评估效果，决定下一次应该往哪个方向改进。 这里的“驾驶台”和“参数”都是常见的概念，而“操作”和“评估效果”则是更具体的实现细节。 所以它不是孤立知识点，而是本章里一个重要的学习目标。
 ```
 
-这一组样例对应的是“概念解释是否真正贴住章节语境”。基座模型停留在泛泛的“类比有助于理解”层面；微调后回答开始尝试把解释拉回训练流程，但和参考答案相比仍然存在明显偏移。
+基座模型停留在泛化的“类比有助于理解”层面。微调后回答开始把解释拉回训练流程，但和参考要点相比仍有明显偏移。
 
 ### 4. 要点总结
 
@@ -412,7 +438,6 @@ base model
 **参考要点**
 
 ```text
-这类问题更适合压缩成几个稳定要点：
 1. 用熟悉类比先建立对训练流程的整体直觉。
 2. 这个类比并不要求严格映射数学定义，重点是先理解主线。
 3. 它为后面的数据预处理、模型训练和评估内容提供认知上的铺垫。
@@ -435,7 +460,7 @@ base model
 3. 因此训练的目标可以写成：最大化分类损失 + 目标概率最大化。
 ```
 
-这一题更能暴露当前版本的边界。微调后回答已经进入课程语境，但仍会捏造目标形式和训练目标，因此这一版更适合作为复习辅助，而不是直接替代原文。
+这一组保留了当前版本的主要边界。微调后回答虽然已经进入课程语境，但仍会捏造目标形式和训练目标，因此更适合作为复习辅助，而不能直接替代原文。
 
 ## 本章实验在做什么
 
@@ -480,8 +505,10 @@ notes/01-06
 - `experiments/05-notes-assistant-sft-experiments/train_sft.py`：训练入口
 - `experiments/05-notes-assistant-sft-experiments/evaluate_qa.py`：评测入口
 - `experiments/05-notes-assistant-sft-experiments/launch_demo.py`：演示入口
+- `experiments/05-notes-assistant-sft-experiments/summarize_template_ablation.py`：多组模板消融汇总入口
 - `experiments/05-notes-assistant-sft-experiments/notes_assistant_experiments/dataset_builder.py`：笔记解析与数据生成
 - `experiments/05-notes-assistant-sft-experiments/notes_assistant_experiments/train.py`：LoRA / QLoRA 主流程
+- `experiments/05-notes-assistant-sft-experiments/notes_assistant_experiments/ablation.py`：模板组消融汇总逻辑
 
 ## 继续阅读
 
@@ -494,7 +521,7 @@ notes/01-06
 cd experiments/05-notes-assistant-sft-experiments
 pip install -r ../requirements.txt
 python prepare_dataset.py --overwrite
-python train_sft.py
+python train_sft.py --experiment-name notes-assistant-qwen25-0p5b
 ```
 
 小规模冒烟验证：
@@ -513,4 +540,21 @@ python evaluate_qa.py --run-dir outputs/notes-assistant-qwen25-0p5b
 
 ```bash
 python launch_demo.py --run-dir outputs/notes-assistant-qwen25-0p5b
+```
+
+模板组消融：
+
+```bash
+python train_sft.py --experiment-name notes-assistant-template-content --template-group content
+python train_sft.py --experiment-name notes-assistant-template-structure --template-group structure
+python train_sft.py --experiment-name notes-assistant-template-core-only --template-group core_only
+python evaluate_qa.py --run-dir outputs/notes-assistant-template-content
+python evaluate_qa.py --run-dir outputs/notes-assistant-template-structure
+python evaluate_qa.py --run-dir outputs/notes-assistant-template-core-only
+python summarize_template_ablation.py ^
+  --run-dir outputs/notes-assistant-qwen25-0p5b ^
+  --run-dir outputs/notes-assistant-template-content ^
+  --run-dir outputs/notes-assistant-template-structure ^
+  --run-dir outputs/notes-assistant-template-core-only ^
+  --output outputs/template-group-ablation-summary.md
 ```

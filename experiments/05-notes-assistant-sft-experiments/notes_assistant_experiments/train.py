@@ -4,7 +4,11 @@ import argparse
 import inspect
 from pathlib import Path
 
-from .config import ExperimentConfig, create_default_config
+from .config import (
+    TEMPLATE_GROUPS,
+    ExperimentConfig,
+    create_default_config,
+)
 from .utils import ensure_dir, set_seed, summarize_trainable_parameters, write_json, write_text
 
 
@@ -40,6 +44,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--system-prompt",
         default=default_config.system_prompt,
+    )
+    parser.add_argument(
+        "--template-group",
+        choices=tuple(TEMPLATE_GROUPS),
+        default=default_config.template_group,
+        help="Select which training/validation question templates are included.",
     )
     parser.add_argument(
         "--max-seq-length",
@@ -164,6 +174,7 @@ def config_from_args(args: argparse.Namespace) -> ExperimentConfig:
         dataset_summary_filename=args.dataset_summary_filename,
         model_id=args.model_id,
         system_prompt=args.system_prompt,
+        template_group=args.template_group,
         max_seq_length=args.max_seq_length,
         per_device_train_batch_size=args.batch_size,
         per_device_eval_batch_size=args.eval_batch_size,
@@ -278,10 +289,20 @@ def run_training(
     print(f"Run directory: {run_dir}")
     print(f"Dataset: {config.dataset_path}")
     print(
+        f"Template group: {config.template_group} "
+        f"({', '.join(config.selected_template_ids)})"
+    )
+    print(
         "Split sizes: "
         f"train={data_bundle.raw_counts['train']} "
         f"val={data_bundle.raw_counts['val']} "
         f"test={data_bundle.raw_counts['test']}"
+    )
+    print(
+        "Template counts: "
+        f"train={data_bundle.template_counts['train']} "
+        f"val={data_bundle.template_counts['val']} "
+        f"test={data_bundle.template_counts['test']}"
     )
     print(
         f"Trainable parameters: {trainable_params:,} / {total_params:,} "
@@ -363,6 +384,9 @@ def run_training(
         "config": config.to_dict(),
         "dataset_path": str(config.dataset_path),
         "split_counts": data_bundle.raw_counts,
+        "template_group": config.template_group,
+        "selected_template_ids": list(config.selected_template_ids),
+        "split_template_counts": data_bundle.template_counts,
         "trainable_parameters": trainable_params,
         "total_parameters": total_params,
         "train_metrics": train_result.metrics,
@@ -411,6 +435,8 @@ def render_sample_markdown(
                 f"## Sample {index}",
                 "",
                 f"**Source**: {record['source_chapter']} / {record['source_section']}",
+                "",
+                f"**Template**: {record['template_id']}",
                 "",
                 "**Question**",
                 "",

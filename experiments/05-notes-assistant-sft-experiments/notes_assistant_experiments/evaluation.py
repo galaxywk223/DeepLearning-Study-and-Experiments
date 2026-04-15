@@ -142,6 +142,7 @@ def run_evaluation(
                 "id": record["id"],
                 "source_chapter": record["source_chapter"],
                 "source_section": record["source_section"],
+                "template_id": record["template_id"],
                 "instruction": record["instruction"],
                 "input": record["input"],
                 "reference": reference,
@@ -176,6 +177,12 @@ def summarize_metrics(rows: list[dict[str, object]]) -> dict[str, object]:
     if not rows:
         return {"sample_count": 0}
 
+    metrics = summarize_bucket(rows)
+    metrics["by_template_id"] = summarize_by_template(rows)
+    return metrics
+
+
+def summarize_bucket(rows: list[dict[str, object]]) -> dict[str, object]:
     base_f1 = sum(float(row["base_char_f1"]) for row in rows) / len(rows)
     tuned_f1 = sum(float(row["finetuned_char_f1"]) for row in rows) / len(rows)
     base_em = sum(float(row["base_exact_match"]) for row in rows) / len(rows)
@@ -194,6 +201,17 @@ def summarize_metrics(rows: list[dict[str, object]]) -> dict[str, object]:
     }
 
 
+def summarize_by_template(rows: list[dict[str, object]]) -> dict[str, dict[str, object]]:
+    grouped: dict[str, list[dict[str, object]]] = {}
+    for row in rows:
+        template_id = str(row.get("template_id", "unknown"))
+        grouped.setdefault(template_id, []).append(row)
+    return {
+        template_id: summarize_bucket(group_rows)
+        for template_id, group_rows in sorted(grouped.items())
+    }
+
+
 def render_report(
     rows: list[dict[str, object]],
     metrics: dict[str, object],
@@ -208,13 +226,31 @@ def render_report(
         f"- Finetuned exact match: {metrics['finetuned_avg_exact_match']:.4f}",
         f"- Finetuned better rate: {metrics['tuned_better_rate']:.2%}",
         "",
+        "## Breakdown by Template",
+        "",
     ]
+    for template_id, template_metrics in metrics.get("by_template_id", {}).items():
+        lines.extend(
+            [
+                f"### {template_id}",
+                "",
+                f"- Sample count: {template_metrics['sample_count']}",
+                f"- Base avg char F1: {template_metrics['base_avg_char_f1']:.4f}",
+                f"- Finetuned avg char F1: {template_metrics['finetuned_avg_char_f1']:.4f}",
+                f"- Base exact match: {template_metrics['base_avg_exact_match']:.4f}",
+                f"- Finetuned exact match: {template_metrics['finetuned_avg_exact_match']:.4f}",
+                f"- Finetuned better rate: {template_metrics['tuned_better_rate']:.2%}",
+                "",
+            ]
+        )
     for index, row in enumerate(rows, start=1):
         lines.extend(
             [
                 f"## Example {index}",
                 "",
                 f"**Source**: {row['source_chapter']} / {row['source_section']}",
+                "",
+                f"**Template**: {row['template_id']}",
                 "",
                 "**Question**",
                 "",
@@ -246,6 +282,7 @@ def manual_review_fields() -> list[str]:
         "id",
         "source_chapter",
         "source_section",
+        "template_id",
         "instruction",
         "reference",
         "base_answer",
@@ -271,6 +308,7 @@ def build_manual_review_rows(
                 "id": row["id"],
                 "source_chapter": row["source_chapter"],
                 "source_section": row["source_section"],
+                "template_id": row["template_id"],
                 "instruction": row["instruction"],
                 "reference": row["reference"],
                 "base_answer": row["base_answer"],

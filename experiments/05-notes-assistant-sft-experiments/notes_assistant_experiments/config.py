@@ -11,6 +11,28 @@ DEFAULT_SYSTEM_PROMPT = (
     "你是一名深度学习学习助教，只回答当前课程笔记覆盖的内容；"
     "不确定时明确说不知道，不编造未覆盖细节。"
 )
+DEFAULT_TEMPLATE_IDS = (
+    "explain_core",
+    "key_points",
+    "study_focus",
+    "chapter_position",
+    "experiment_bridge",
+)
+TEMPLATE_GROUPS = {
+    "full": DEFAULT_TEMPLATE_IDS,
+    "content": (
+        "explain_core",
+        "key_points",
+        "study_focus",
+    ),
+    "structure": (
+        "explain_core",
+        "chapter_position",
+        "experiment_bridge",
+    ),
+    "core_only": ("explain_core",),
+}
+DEFAULT_TEMPLATE_GROUP = "full"
 DEFAULT_TARGET_MODULES = (
     "q_proj",
     "k_proj",
@@ -32,6 +54,7 @@ class ExperimentConfig:
     dataset_summary_filename: str = "notes-assistant-dataset-summary.json"
     model_id: str = "Qwen/Qwen2.5-0.5B-Instruct"
     system_prompt: str = DEFAULT_SYSTEM_PROMPT
+    template_group: str = DEFAULT_TEMPLATE_GROUP
     max_seq_length: int = 512
     per_device_train_batch_size: int = 1
     per_device_eval_batch_size: int = 1
@@ -99,6 +122,16 @@ class ExperimentConfig:
     def evaluation_dir(self) -> Path:
         return self.run_dir / "evaluation"
 
+    @property
+    def selected_template_ids(self) -> tuple[str, ...]:
+        try:
+            return TEMPLATE_GROUPS[self.template_group]
+        except KeyError as exc:
+            valid = ", ".join(sorted(TEMPLATE_GROUPS))
+            raise ValueError(
+                f"Unknown template group '{self.template_group}'. Expected one of: {valid}"
+            ) from exc
+
     def to_dict(self) -> dict[str, object]:
         return {
             "experiment_name": self.experiment_name,
@@ -109,6 +142,8 @@ class ExperimentConfig:
             "dataset_summary_filename": self.dataset_summary_filename,
             "model_id": self.model_id,
             "system_prompt": self.system_prompt,
+            "template_group": self.template_group,
+            "selected_template_ids": list(self.selected_template_ids),
             "max_seq_length": self.max_seq_length,
             "per_device_train_batch_size": self.per_device_train_batch_size,
             "per_device_eval_batch_size": self.per_device_eval_batch_size,
@@ -155,6 +190,9 @@ class ExperimentConfig:
             ),
             model_id=str(payload.get("model_id", "Qwen/Qwen2.5-0.5B-Instruct")),
             system_prompt=str(payload.get("system_prompt", DEFAULT_SYSTEM_PROMPT)),
+            template_group=str(
+                payload.get("template_group", DEFAULT_TEMPLATE_GROUP)
+            ),
             max_seq_length=int(payload.get("max_seq_length", 512)),
             per_device_train_batch_size=int(
                 payload.get("per_device_train_batch_size", 1)

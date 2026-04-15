@@ -16,6 +16,7 @@ class SFTSplitBundle:
     val_dataset: Dataset
     test_records: list[dict[str, object]]
     raw_counts: dict[str, int]
+    template_counts: dict[str, dict[str, int]]
 
 
 def load_sft_splits(
@@ -30,6 +31,18 @@ def load_sft_splits(
     train_records = [record for record in records if record["split"] == "train"]
     val_records = [record for record in records if record["split"] == "val"]
     test_records = [record for record in records if record["split"] == "test"]
+
+    selected_template_ids = set(config.selected_template_ids)
+    train_records = [
+        record
+        for record in train_records
+        if str(record["template_id"]) in selected_template_ids
+    ]
+    val_records = [
+        record
+        for record in val_records
+        if str(record["template_id"]) in selected_template_ids
+    ]
 
     if config.max_train_samples > 0:
         train_records = train_records[: config.max_train_samples]
@@ -53,6 +66,11 @@ def load_sft_splits(
             "val": len(val_records),
             "test": len(test_records),
         },
+        template_counts={
+            "train": count_template_ids(train_records),
+            "val": count_template_ids(val_records),
+            "test": count_template_ids(test_records),
+        },
     )
 
 
@@ -67,6 +85,14 @@ def build_processed_records(
         if tokenized is not None:
             processed.append(tokenized)
     return processed
+
+
+def count_template_ids(records: list[dict[str, object]]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for record in records:
+        template_id = str(record.get("template_id", "unknown"))
+        counts[template_id] = counts.get(template_id, 0) + 1
+    return dict(sorted(counts.items()))
 
 
 def compose_user_message(record: dict[str, object]) -> str:
