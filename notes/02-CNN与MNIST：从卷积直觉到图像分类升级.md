@@ -384,14 +384,6 @@ $$\theta_{t+1} = \theta_t - \eta \cdot \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsi
 
 在图像任务里，这种操作可以更自然地利用空间邻域信息。相比直接展平输入的 MLP，CNN 能更高效地提取边缘、纹理和局部结构，因此在 MNIST 这样的图像分类任务上通常表现更好。
 
-## 如何运行
-
-```bash
-cd experiments/01-mnist-cnn-experiments
-pip install -r ../requirements.txt
-python train_cnn.py
-```
-
 ## 代码入口
 
 - `experiments/01-mnist-cnn-experiments/train_cnn.py`：训练入口
@@ -404,3 +396,11 @@ python train_cnn.py
 - 上一章：[01-MLP与MNIST：从数据预处理到最小分类训练](./01-MLP与MNIST：从数据预处理到最小分类训练.md)
 - 下一章：[03-CIFAR-10与ResNet：从简单CNN到残差网络](./03-CIFAR-10与ResNet：从简单CNN到残差网络.md)
 - 项目速查：[MNIST 实验速查](../experiments/01-mnist-cnn-experiments/README.md)
+
+## 如何运行
+
+```bash
+cd experiments/01-mnist-cnn-experiments
+pip install -r ../requirements.txt
+python train_cnn.py
+```

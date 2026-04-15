@@ -79,16 +79,6 @@ $$
 
 也就是说，这一章不只是“把准确率做高了一点”，而是在图像分类这条线上补出了从入门到工程化之间的过渡层。
 
-## 如何运行
-
-```bash
-cd experiments/02-cifar10-cnn-experiments
-pip install -r ../requirements.txt
-python train_baseline.py
-python train_improved.py
-python train_resnet.py
-```
-
 ## 代码入口
 
 - `experiments/02-cifar10-cnn-experiments/train_baseline.py`：简单 CNN 训练入口
@@ -102,3 +92,13 @@ python train_resnet.py
 - 上一章：[02-CNN与MNIST：从卷积直觉到图像分类升级](./02-CNN与MNIST：从卷积直觉到图像分类升级.md)
 - 下一章：[04-自注意力机制：从Q、K、V到缩放点积注意力](./04-自注意力机制：从Q、K、V到缩放点积注意力.md)
 - 项目速查：[CIFAR-10 实验速查](../experiments/02-cifar10-cnn-experiments/README.md)
+
+## 如何运行
+
+```bash
+cd experiments/02-cifar10-cnn-experiments
+pip install -r ../requirements.txt
+python train_baseline.py
+python train_improved.py
+python train_resnet.py
+```

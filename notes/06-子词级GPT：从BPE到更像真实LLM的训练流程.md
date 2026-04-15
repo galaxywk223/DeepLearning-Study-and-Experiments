@@ -284,6 +284,19 @@ pad 位置不再参与损失计算。
 
 做完这一步之后，你对 GPT 的理解会更接近“它在工程上到底是怎么被训练出来的”，而不只是“我知道注意力公式长什么样”。
 
+## 代码入口
+
+- `experiments/04-subword-gpt-experiments/train_gpt.py`：训练入口
+- `experiments/04-subword-gpt-experiments/generate_samples.py`：生成样例导出入口
+- `experiments/04-subword-gpt-experiments/subword_gpt_experiments/tokenizer.py`：BPE tokenizer 逻辑
+- `experiments/04-subword-gpt-experiments/subword_gpt_experiments/models.py`：模型定义
+- `experiments/04-subword-gpt-experiments/subword_gpt_experiments/runner.py`：训练主流程
+
+## 继续阅读
+
+- 上一章：[05-Transformer语言模型：从位置编码到最小可训练实现](./05-Transformer语言模型：从位置编码到最小可训练实现.md)
+- 项目速查：[子词级 GPT 实验速查](../experiments/04-subword-gpt-experiments/README.md)
+
 ## 如何运行
 
 ```bash
@@ -297,16 +310,3 @@ python train_gpt.py
 ```bash
 python generate_samples.py --run-dir outputs/<experiment-name> --temperatures 0.6 0.8 1.0 --top-k 40 --top-p 0.95
 ```
-
-## 代码入口
-
-- `experiments/04-subword-gpt-experiments/train_gpt.py`：训练入口
-- `experiments/04-subword-gpt-experiments/generate_samples.py`：生成样例导出入口
-- `experiments/04-subword-gpt-experiments/subword_gpt_experiments/tokenizer.py`：BPE tokenizer 逻辑
-- `experiments/04-subword-gpt-experiments/subword_gpt_experiments/models.py`：模型定义
-- `experiments/04-subword-gpt-experiments/subword_gpt_experiments/runner.py`：训练主流程
-
-## 继续阅读
-
-- 上一章：[05-Transformer语言模型：从位置编码到最小可训练实现](./05-Transformer语言模型：从位置编码到最小可训练实现.md)
-- 项目速查：[子词级 GPT 实验速查](../experiments/04-subword-gpt-experiments/README.md)

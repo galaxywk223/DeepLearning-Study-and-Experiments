@@ -12,6 +12,7 @@
 | [04-自注意力机制：从Q、K、V到缩放点积注意力](./04-自注意力机制：从Q、K、V到缩放点积注意力.md) | 自注意力机制 | 准备进入 Transformer 之前 | [字符级 Transformer 实验速查](../experiments/03-char-transformer-experiments/README.md) |
 | [05-Transformer语言模型：从位置编码到最小可训练实现](./05-Transformer语言模型：从位置编码到最小可训练实现.md) | Transformer 语言模型 | 想把注意力真正落到可训练代码里时 | [字符级 Transformer 实验速查](../experiments/03-char-transformer-experiments/README.md) |
 | [06-子词级GPT：从BPE到更像真实LLM的训练流程](./06-子词级GPT：从BPE到更像真实LLM的训练流程.md) | 子词级 GPT | 想继续补 tokenizer、padding 和采样控制时 | [子词级 GPT 实验速查](../experiments/04-subword-gpt-experiments/README.md) |
+| [07-指令微调与LoRA：从预训练模型到领域助教](./07-指令微调与LoRA：从预训练模型到领域助教.md) | 指令微调与 LoRA | 准备从最小 GPT 继续走向真实 LLM 微调流程时 | [Notes Assistant SFT 实验速查](../experiments/05-notes-assistant-sft-experiments/README.md) |
 
 ## 与实验对应
 
@@ -21,3 +22,4 @@
 | [experiments/02-cifar10-cnn-experiments](../experiments/02-cifar10-cnn-experiments/README.md) | `03` | 从简单 CNN 到 ResNet 的 CIFAR-10 分类实验 |
 | [experiments/03-char-transformer-experiments](../experiments/03-char-transformer-experiments/README.md) | `04`、`05` | 自注意力到最小字符级语言模型实现 |
 | [experiments/04-subword-gpt-experiments](../experiments/04-subword-gpt-experiments/README.md) | `06` | 子词级 tokenizer、训练和采样流程 |
+| [experiments/05-notes-assistant-sft-experiments](../experiments/05-notes-assistant-sft-experiments/README.md) | `07` | 基于现有笔记的数据构建、SFT、LoRA 与评测流程 |

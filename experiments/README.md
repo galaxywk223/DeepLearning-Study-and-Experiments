@@ -10,6 +10,7 @@
 | [02-cifar10-cnn-experiments](./02-cifar10-cnn-experiments/README.md) | [03-CIFAR-10 与 ResNet](../notes/03-CIFAR-10与ResNet：从简单CNN到残差网络.md) | `python train_resnet.py` | 从简单 CNN 升级到 ResNet 的 CIFAR-10 实验 |
 | [03-char-transformer-experiments](./03-char-transformer-experiments/README.md) | [04-自注意力机制](../notes/04-自注意力机制：从Q、K、V到缩放点积注意力.md)、[05-Transformer 语言模型](../notes/05-Transformer语言模型：从位置编码到最小可训练实现.md) | `python train_transformer.py` | 最小字符级 Transformer 训练与采样 |
 | [04-subword-gpt-experiments](./04-subword-gpt-experiments/README.md) | [06-子词级 GPT](../notes/06-子词级GPT：从BPE到更像真实LLM的训练流程.md) | `python train_gpt.py` | 子词级 GPT 训练、采样与 tokenizer 工作流 |
+| [05-notes-assistant-sft-experiments](./05-notes-assistant-sft-experiments/README.md) | [07-指令微调与LoRA](../notes/07-指令微调与LoRA：从预训练模型到领域助教.md) | `python train_sft.py` | 基于现有笔记的数据构建、SFT、LoRA 与评测流程 |
 
 ## 运行前准备
 
@@ -24,6 +25,12 @@ python train_cnn.py
 ```bash
 cd experiments/04-subword-gpt-experiments
 python train_gpt.py
+```
+
+```bash
+cd experiments/05-notes-assistant-sft-experiments
+python prepare_dataset.py --overwrite
+python train_sft.py --smoke
 ```
 
 每个实验目录都会把本地数据写入 `data/`，把模型和指标写入 `outputs/`。

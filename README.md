@@ -1,6 +1,6 @@
 # 深度学习学习与实验
 
-这个仓库整理了深度学习方向的中文学习笔记和配套实验，当前主线覆盖图像分类与语言模型。主阅读层放在 `notes/`，可运行实验统一放在 `experiments/`，代码实现以 PyTorch 为主。
+这个仓库整理了深度学习方向的中文学习笔记和配套实验，当前主线覆盖图像分类、语言模型，以及基于预训练模型的轻量微调实验。主阅读层放在 `notes/`，可运行实验统一放在 `experiments/`，代码实现以 PyTorch 为主。
 
 ## 仓库导航
 
@@ -18,6 +18,7 @@
 | [04](./notes/04-自注意力机制：从Q、K、V到缩放点积注意力.md) | 自注意力机制 | 建立 `Q / K / V` 和缩放点积注意力直觉 | [字符级 Transformer 实验速查](./experiments/03-char-transformer-experiments/README.md) |
 | [05](./notes/05-Transformer语言模型：从位置编码到最小可训练实现.md) | Transformer 语言模型 | 把注意力落成最小 decoder-only 语言模型 | [字符级 Transformer 实验速查](./experiments/03-char-transformer-experiments/README.md) |
 | [06](./notes/06-子词级GPT：从BPE到更像真实LLM的训练流程.md) | 子词级 GPT | 补齐 tokenizer、padding 和采样控制，走向更完整的 GPT 工作流 | [子词级 GPT 实验速查](./experiments/04-subword-gpt-experiments/README.md) |
+| [07](./notes/07-指令微调与LoRA：从预训练模型到领域助教.md) | 指令微调与 LoRA | 从预训练模型出发补齐 `SFT + LoRA/QLoRA + 评测 + Demo` 的轻量微调流程 | [Notes Assistant SFT 实验速查](./experiments/05-notes-assistant-sft-experiments/README.md) |
 
 ## 结果速览
 
@@ -27,8 +28,11 @@
 | CIFAR-10 | `ResNet` 测试集准确率 `95.33%` | 结构升级和训练策略如何一起拉高上限 |
 | Character Transformer | `transformer v3` 验证集困惑度 `4.63` | 最小字符级 Transformer 的实现与生成表现 |
 | Subword GPT | `subword-gpt v2` 验证集困惑度 `13.19` | 更接近真实 GPT 的 tokenizer 和训练流程 |
+| Notes Assistant SFT | 平均字符级 F1 `0.285 -> 0.444` | 基于 `Qwen2.5-0.5B-Instruct + LoRA` 的领域助教在 `30` 道 held-out 题上有 `93.33%` 样本优于基座 |
 
 语言模型两条结果不能直接横向比较，因为 token 粒度不同，更适合作为两条独立的学习线理解。
+
+第 `07` 章对应的是基于预训练模型的轻量微调主线，重点放在指令数据、adapter 训练和评测流程。
 
 ## 精选展示
 
@@ -56,6 +60,14 @@
   <img src="./assets/showcase/subword-gpt-v2-loss-curve.png" alt="Subword GPT v2 收敛曲线" width="760" />
 </p>
 
+### Notes Assistant SFT
+
+第 `07` 章笔记中保留了基座模型与微调后模型的代表问答对照，这里只展示对应的缩略图。完整说明见 [07-指令微调与LoRA：从预训练模型到领域助教](./notes/07-指令微调与LoRA：从预训练模型到领域助教.md)。
+
+<p align="center">
+  <img src="./assets/showcase/notes-assistant-qwen25-0p5b-public-results.png" alt="Notes Assistant 公开代表结果" width="920" />
+</p>
+
 ## 快速开始
 
 共享依赖位于 `experiments/requirements.txt`。常用运行入口如下：
@@ -69,6 +81,12 @@ python train_cnn.py
 ```bash
 cd experiments/03-char-transformer-experiments
 python train_transformer.py
+```
+
+```bash
+cd experiments/05-notes-assistant-sft-experiments
+python prepare_dataset.py --overwrite
+python train_sft.py --smoke
 ```
 
 运行后，各实验会在自己的目录下生成：
@@ -92,14 +110,16 @@ DeepLearning-Study-and-Experiments/
 │  ├─ 03-CIFAR-10与ResNet：从简单CNN到残差网络.md
 │  ├─ 04-自注意力机制：从Q、K、V到缩放点积注意力.md
 │  ├─ 05-Transformer语言模型：从位置编码到最小可训练实现.md
-│  └─ 06-子词级GPT：从BPE到更像真实LLM的训练流程.md
+│  ├─ 06-子词级GPT：从BPE到更像真实LLM的训练流程.md
+│  └─ 07-指令微调与LoRA：从预训练模型到领域助教.md
 ├─ experiments/
 │  ├─ README.md
 │  ├─ requirements.txt
 │  ├─ 01-mnist-cnn-experiments/
 │  ├─ 02-cifar10-cnn-experiments/
 │  ├─ 03-char-transformer-experiments/
-│  └─ 04-subword-gpt-experiments/
+│  ├─ 04-subword-gpt-experiments/
+│  └─ 05-notes-assistant-sft-experiments/
 ├─ .gitignore
 ├─ LICENSE
 └─ README.md

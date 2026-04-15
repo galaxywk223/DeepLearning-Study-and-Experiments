@@ -319,6 +319,20 @@ $$
 
 如果把这些部分真正实现一遍，你对 Transformer 的理解会从“知道公式”进入“知道它为什么能跑起来，以及训练代码里每一层到底在干什么”。
 
+## 代码入口
+
+- `experiments/03-char-transformer-experiments/train_bigram.py`：bigram 基线入口
+- `experiments/03-char-transformer-experiments/train_transformer.py`：Transformer 训练入口
+- `experiments/03-char-transformer-experiments/generate_samples.py`：采样导出入口
+- `experiments/03-char-transformer-experiments/char_transformer_experiments/models.py`：模型定义
+- `experiments/03-char-transformer-experiments/char_transformer_experiments/runner.py`：训练主流程
+
+## 继续阅读
+
+- 上一章：[04-自注意力机制：从Q、K、V到缩放点积注意力](./04-自注意力机制：从Q、K、V到缩放点积注意力.md)
+- 下一章：[06-子词级GPT：从BPE到更像真实LLM的训练流程](./06-子词级GPT：从BPE到更像真实LLM的训练流程.md)
+- 项目速查：[字符级 Transformer 实验速查](../experiments/03-char-transformer-experiments/README.md)
+
 ## 如何运行
 
 ```bash
@@ -333,17 +347,3 @@ python train_transformer.py
 ```bash
 python generate_samples.py --run-dir outputs/<experiment-name> --temperatures 0.6 0.75 0.9
 ```
-
-## 代码入口
-
-- `experiments/03-char-transformer-experiments/train_bigram.py`：bigram 基线入口
-- `experiments/03-char-transformer-experiments/train_transformer.py`：Transformer 训练入口
-- `experiments/03-char-transformer-experiments/generate_samples.py`：采样导出入口
-- `experiments/03-char-transformer-experiments/char_transformer_experiments/models.py`：模型定义
-- `experiments/03-char-transformer-experiments/char_transformer_experiments/runner.py`：训练主流程
-
-## 继续阅读
-
-- 上一章：[04-自注意力机制：从Q、K、V到缩放点积注意力](./04-自注意力机制：从Q、K、V到缩放点积注意力.md)
-- 下一章：[06-子词级GPT：从BPE到更像真实LLM的训练流程](./06-子词级GPT：从BPE到更像真实LLM的训练流程.md)
-- 项目速查：[字符级 Transformer 实验速查](../experiments/03-char-transformer-experiments/README.md)

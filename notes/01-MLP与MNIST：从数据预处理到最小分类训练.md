@@ -565,14 +565,6 @@ plt.show()
 
 虽然这个模型结构很简单，但它已经包含了后续深度学习项目中的几个基本要素：数据预处理、模型定义、损失函数、优化器和训练循环。理解这条主线之后，再看 CNN、Transformer 等更复杂模型会更容易建立整体认识。
 
-## 如何运行
-
-```bash
-cd experiments/01-mnist-cnn-experiments
-pip install -r ../requirements.txt
-python train_mlp.py
-```
-
 ## 代码入口
 
 - `experiments/01-mnist-cnn-experiments/train_mlp.py`：训练入口
@@ -584,3 +576,11 @@ python train_mlp.py
 
 - 下一章：[02-CNN与MNIST：从卷积直觉到图像分类升级](./02-CNN与MNIST：从卷积直觉到图像分类升级.md)
 - 项目速查：[MNIST 实验速查](../experiments/01-mnist-cnn-experiments/README.md)
+
+## 如何运行
+
+```bash
+cd experiments/01-mnist-cnn-experiments
+pip install -r ../requirements.txt
+python train_mlp.py
+```

@@ -190,14 +190,6 @@ $$
 
 理解了这一条主线，再去看多头注意力、位置编码和完整 Transformer 结构，就会容易很多。
 
-## 如何运行对应实验
-
-```bash
-cd experiments/03-char-transformer-experiments
-pip install -r ../requirements.txt
-python train_transformer.py
-```
-
 ## 代码入口
 
 - `experiments/03-char-transformer-experiments/char_transformer_experiments/models.py`：注意力与 Transformer block 实现
@@ -208,3 +200,11 @@ python train_transformer.py
 - 上一章：[03-CIFAR-10与ResNet：从简单CNN到残差网络](./03-CIFAR-10与ResNet：从简单CNN到残差网络.md)
 - 下一章：[05-Transformer语言模型：从位置编码到最小可训练实现](./05-Transformer语言模型：从位置编码到最小可训练实现.md)
 - 项目速查：[字符级 Transformer 实验速查](../experiments/03-char-transformer-experiments/README.md)
+
+## 如何运行
+
+```bash
+cd experiments/03-char-transformer-experiments
+pip install -r ../requirements.txt
+python train_transformer.py
+```
