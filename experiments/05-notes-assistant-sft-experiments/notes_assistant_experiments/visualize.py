@@ -52,4 +52,3 @@ def save_loss_curve(
     figure.savefig(destination, dpi=180)
     plt.close(figure)
     return True, "saved"
-

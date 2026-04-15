@@ -193,4 +193,3 @@ class ExperimentConfig:
 
 def create_default_config() -> ExperimentConfig:
     return ExperimentConfig()
-

@@ -286,4 +286,3 @@ def build_manual_review_rows(
             }
         )
     return review_rows
-
