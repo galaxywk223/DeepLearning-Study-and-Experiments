@@ -37,3 +37,6 @@ runs/
 data/
 experiments/*/data/
 datasets/
+
+# Local notes
+.local/
