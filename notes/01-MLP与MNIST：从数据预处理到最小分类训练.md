@@ -128,7 +128,10 @@ test_dataset = datasets.MNIST(
 如果数据整体上不是单一线性关系，而是由多个局部近似线性的区段组成，那么单一线性模型通常不足以拟合这种变化。一个自然的想法是：先用多个局部线性函数描述不同区段，再把它们组合起来。
 
 假设存在如图所示的序列数据（实际数据点远多于图中示意点，整体呈现多段近似线性的分布特征）：
-> <img src="../assets/images/01-mlp-mnist/de2ca7bc7b1f489f8834f2e151b2fcc8.png" alt="分段线性示意图" width="62%">
+
+<p align="center">
+  <img src="../assets/images/01-mlp-mnist/de2ca7bc7b1f489f8834f2e151b2fcc8.png" alt="分段线性示意图" width="760" />
+</p>
 
 
 面对这种数据，一个直接做法是把不同区段视为独立线性模型：
@@ -159,7 +162,10 @@ $$
 这里的 $b_i$ 已经不再是原始线性回归里的同一个截距概念，而是重参数化之后的一部分。
 
 可视化效果如图所示：
-> <img src="../assets/images/01-mlp-mnist/b05cbe5bd0d44591ad6999db3dc8c17b.png" alt="分段函数可视化示意图" width="62%">
+
+<p align="center">
+  <img src="../assets/images/01-mlp-mnist/b05cbe5bd0d44591ad6999db3dc8c17b.png" alt="分段函数可视化示意图" width="760" />
+</p>
 
 
 此时，整体函数可以看成多个局部基函数的线性叠加。为了继续简化表达，可以进一步把输出范围统一到标准形式。
@@ -197,7 +203,10 @@ $$
 \sigma(x) = \frac{1}{1+e^{-x}}
 $$
 它的 S 形曲线与“阈值逐渐开启”的行为比较接近：
-> <img src="../assets/images/01-mlp-mnist/d730d42c4ad34214843afda68f58cc14.png" alt="Sigmoid 曲线示意图" width="62%">
+
+<p align="center">
+  <img src="../assets/images/01-mlp-mnist/d730d42c4ad34214843afda68f58cc14.png" alt="Sigmoid 曲线示意图" width="760" />
+</p>
 
 
 要让 Sigmoid 真正具备表达能力，通常需要三类可调参数：
@@ -230,7 +239,10 @@ $$
 这个推导的重点不在于严格证明，而在于建立直觉：神经网络可以理解为多个可调非线性基函数的组合，每个神经元都在特征空间里做一次线性变换和非线性映射。
 
 结合结构图，前向计算过程如下：
-> <img src="../assets/images/01-mlp-mnist/90dc1fbe58d4462eb8c7fc0c75c21d91.png" alt="神经网络前向传播示意图" width="62%">
+
+<p align="center">
+  <img src="../assets/images/01-mlp-mnist/90dc1fbe58d4462eb8c7fc0c75c21d91.png" alt="神经网络前向传播示意图" width="760" />
+</p>
 
 
 计算流程可以分成三步：
@@ -269,7 +281,10 @@ $$
 “神经网络”这个名字来自对生物神经元工作方式的类比。虽然现代深度学习模型与真实神经系统并不等价，但这个类比在入门阶段仍然有帮助。
 
 在线性组合得到中间量 $r$ 之后，激活函数会对信号做一次筛选。其作用接近一种阈值机制：较弱的信号被压低，较强的信号被保留下来。下图给出这种过程的示意：
-> <img src="../assets/images/01-mlp-mnist/2ffba6ed39f74e019eb50dea9fb0a467.png" alt="神经元激活示意图" width="62%">
+
+<p align="center">
+  <img src="../assets/images/01-mlp-mnist/2ffba6ed39f74e019eb50dea9fb0a467.png" alt="神经元激活示意图" width="760" />
+</p>
 
 
 - 激活层的作用，是让一部分信息被压制、另一部分信息被继续传递。
@@ -294,7 +309,10 @@ $$
 - 输出层：`10` 个节点，对应 `0-9` 十个类别
 
 具体结构如下图所示：
-> <img src="../assets/images/01-mlp-mnist/ab3150a8e7bb448ba31ecb1b652b8b49.png" alt="MLP 结构示意图" width="62%">
+
+<p align="center">
+  <img src="../assets/images/01-mlp-mnist/ab3150a8e7bb448ba31ecb1b652b8b49.png" alt="MLP 结构示意图" width="760" />
+</p>
 
 
 ### ReLU 的数学优势
@@ -378,7 +396,10 @@ $$
 3. 带动量的优化方法：在 SGD 基础上加入历史梯度信息
 
 优化过程可视为在损失曲面上不断向更低的位置移动。下图给出这种直观印象：
-> <img src="../assets/images/01-mlp-mnist/925e7a260e7f4916b6da747d4cadbd7e.png" alt="损失曲面下降示意图" width="62%">
+
+<p align="center">
+  <img src="../assets/images/01-mlp-mnist/925e7a260e7f4916b6da747d4cadbd7e.png" alt="损失曲面下降示意图" width="760" />
+</p>
 
 
 每次迭代主要做两件事：
@@ -387,7 +408,10 @@ $$
 2. 沿负梯度方向更新参数
 
 梯度方向的含义可由下图直观表示：
-> <img src="../assets/images/01-mlp-mnist/df4db9b06da7434281306d533d0cfee4.png" alt="梯度方向示意图" width="62%">
+
+<p align="center">
+  <img src="../assets/images/01-mlp-mnist/df4db9b06da7434281306d533d0cfee4.png" alt="梯度方向示意图" width="760" />
+</p>
 
 - 斜率为负时，向右移动会降低损失
 - 斜率为正时，向左移动会降低损失
@@ -549,10 +573,10 @@ plt.show()
 ```
 
 
-    
-<img src="../assets/images/01-mlp-mnist/24eca9e6098240f28db8e2a8c8303d78.png" alt="MNIST 预测可视化结果" width="72%">
+<p align="center">
+  <img src="../assets/images/01-mlp-mnist/24eca9e6098240f28db8e2a8c8303d78.png" alt="MNIST 预测可视化结果" width="760" />
+</p>
 
-    
 
 
 ## 小结

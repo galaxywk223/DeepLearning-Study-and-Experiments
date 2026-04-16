@@ -96,7 +96,9 @@ $$
 
 下图给出更直观的过程示意：左边的 $q_1$ 作为“查询”，会去和其他位置生成的 $k_2$、$k_3$ 做匹配比较，从而决定自己更应该关注谁。
 
-> <img src="../assets/images/03-transformer-self-attention/30e5a15fb89b489186e7ad824e39f2cf.png" alt="q1 与其他位置的 key 做匹配示意图" width="62%">
+<p align="center">
+  <img src="../assets/images/03-transformer-self-attention/30e5a15fb89b489186e7ad824e39f2cf.png" alt="q1 与其他位置的 key 做匹配示意图" width="760" />
+</p>
 
 把所有位置一起写成矩阵形式，就是：
 
