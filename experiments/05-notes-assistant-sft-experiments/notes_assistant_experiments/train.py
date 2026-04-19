@@ -13,6 +13,7 @@ from .utils import ensure_dir, set_seed, summarize_trainable_parameters, write_j
 
 
 def run_cli() -> None:
+    # CLI 入口只负责参数解析与配置组装，训练细节集中在 run_training()。
     parser = build_parser()
     args = parser.parse_args()
     config = config_from_args(args)
@@ -165,6 +166,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def config_from_args(args: argparse.Namespace) -> ExperimentConfig:
+    # 命令行参数在这里被收敛为统一配置对象，便于训练、评测和推理复用同一套配置。
     config = ExperimentConfig(
         experiment_name=args.experiment_name,
         notes_dir=Path(args.notes_dir),
@@ -200,6 +202,7 @@ def config_from_args(args: argparse.Namespace) -> ExperimentConfig:
         repetition_penalty=args.repetition_penalty,
     )
     if args.smoke:
+        # 冒烟模式只验证链路是否可运行，因此显式压缩样本量、轮数和日志间隔。
         config.experiment_name = f"{config.experiment_name}-smoke"
         config.max_train_samples = 16
         config.max_eval_samples = 8
@@ -229,8 +232,10 @@ def run_training(
     set_seed(config.seed)
     run_dir = ensure_dir(config.run_dir)
     tokenizer = load_tokenizer(config.model_id)
+    # 训练阶段右侧补齐，保证 assistant 末尾标签与因果语言模型的对齐方式一致。
     tokenizer.padding_side = "right"
 
+    # 数据集加载阶段会确保本地 JSONL 已生成，并提前完成 train/val/test 划分与模板过滤。
     data_bundle = load_sft_splits(
         config,
         tokenizer,
@@ -238,6 +243,7 @@ def run_training(
     )
     collator = SupervisedDataCollator(tokenizer.pad_token_id)
 
+    # 量化配置和 device_map 先被解析为 from_pretrained() 可直接接受的参数。
     quantization_config = build_quantization_config(config.quantization_mode)
     resolved_device_map = resolve_device_map(config.device_map)
     load_kwargs: dict[str, object] = {"trust_remote_code": False}
@@ -249,6 +255,7 @@ def run_training(
         load_kwargs["dtype"] = resolve_compute_dtype()
 
     try:
+        # 这里先加载原始底座模型，LoRA adapter 还没有注入。
         model = AutoModelForCausalLM.from_pretrained(
             config.model_id,
             **load_kwargs,
@@ -263,13 +270,16 @@ def run_training(
             **fallback_kwargs,
         )
     if quantization_config is not None:
+        # QLoRA 路径下，底座模型先以低比特形式加载，再转换为适合 k-bit 训练的状态。
         model = prepare_model_for_kbit_training(
             model,
             use_gradient_checkpointing=config.gradient_checkpointing,
         )
     elif config.gradient_checkpointing:
+        # 非量化路径只需显式开启 gradient checkpointing 以换取更低显存占用。
         model.gradient_checkpointing_enable()
 
+    # LoRA 配置只描述 adapter 的形状和挂载目标，不直接触发训练。
     lora_config = LoraConfig(
         r=config.lora_r,
         lora_alpha=config.lora_alpha,
@@ -278,11 +288,13 @@ def run_training(
         task_type="CAUSAL_LM",
         target_modules=list(config.target_modules),
     )
+    # get_peft_model() 会在目标线性层上注入 LoRA adapter，并返回可训练的包装模型。
     model = get_peft_model(
         model,
         lora_config,
         autocast_adapter_dtype=False,
     )
+    # 训练阶段禁用 KV cache，避免与梯度计算产生冲突。
     model.config.use_cache = False
 
     trainable_params, total_params = summarize_trainable_parameters(model)
@@ -315,6 +327,7 @@ def run_training(
     )
     fp16_enabled = config.quantization_mode != "none" and not bf16_enabled
 
+    # 训练参数按 Transformers 版本兼容地组装，避免旧版/新版字段名差异导致报错。
     training_kwargs: dict[str, object] = {
         "output_dir": str(run_dir),
         "per_device_train_batch_size": config.per_device_train_batch_size,
@@ -352,6 +365,7 @@ def run_training(
 
     training_args = TrainingArguments(**training_kwargs)
 
+    # Trainer 只关心三类核心对象：模型、数据集和 collator；LoRA 逻辑已在模型内部生效。
     trainer = Trainer(
         model=model,
         args=training_args,
@@ -360,14 +374,18 @@ def run_training(
         data_collator=collator,
     )
 
+    # train() 更新的是 LoRA adapter 参数；冻结的底座权重不会参与梯度更新。
     train_result = trainer.train()
     eval_metrics = trainer.evaluate()
+    # 推理和采样阶段需要恢复 cache，以便后续生成更高效。
     trainer.model.config.use_cache = True
 
     ensure_dir(config.adapter_dir)
+    # 保存的是 adapter 权重和 tokenizer，而不是一整份重新导出的底座模型。
     trainer.model.save_pretrained(config.adapter_dir)
     tokenizer.save_pretrained(config.adapter_dir)
 
+    # 训练结束后补充导出可视化和样例，便于快速检查收敛情况与回答风格。
     loss_curve_saved, loss_curve_message = save_loss_curve(
         trainer.state.log_history,
         config.loss_curve_path,
@@ -419,6 +437,7 @@ def render_sample_markdown(
 
     lines = ["# Notes Assistant Sample Generations", ""]
     for index, record in enumerate(records, start=1):
+        # 样例生成复用与正式评测一致的 prompt 构造逻辑，避免展示样例与训练设定脱节。
         question = compose_user_message(record)
         prediction = generate_answer(
             model,

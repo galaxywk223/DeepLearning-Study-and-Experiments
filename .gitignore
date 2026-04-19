@@ -40,3 +40,4 @@ datasets/
 
 # Local notes
 .local/
+.codex-python-env.local.json
